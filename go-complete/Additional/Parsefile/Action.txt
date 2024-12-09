@@ -1,0 +1,14 @@
+Dear {{.First}} {{.Last}},
+
+Thanks for {{if (ge .Count 5)}} 
+the large order of:
+{{else if (ge .Count 0)}}
+ordering several:
+{{else}}
+ordering one:
+{{end}}
+{{.Product}}(s).
+
+Best regards,
+
+Customer Service
