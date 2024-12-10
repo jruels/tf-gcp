@@ -91,15 +91,15 @@ Always remember to run VS Code in **Administrator mode** whenever you need to us
 
 ### **Step 1: Log into the AWS Console**
 
-1. In a browser log into the [AWS Console](https://console.aws.amazon.com/).
-2. Go to IAM.
-3. Click **Users**.
-4. Click **autodev-admin**.
-5. Click **Security Credentials**.
-6. Scroll down and click **Create access key**.
+1. In a browser, log into the [AWS Console](https://console.aws.amazon.com/).
+2. Search for IAM in the search bar.
+3. Click **IAM**
+4. Click **Users**.
+5. Click **autodev-admin**.
+6. On the right click, **Create access key**.
 7. Select **Command Line Interface (CLI)**. 
 8. Check the confirmation box at the bottom of the page and click **Next**.
-9. Skip the description and click **Create Key**.
+9. Skip the description and click **Create access key**.
 10. **IMPORTANT:** Copy the **Access key** and **Secret access key** and save them somewhere. You can optionally download the csv file for easy reference. 
 
 ---
