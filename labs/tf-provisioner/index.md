@@ -1,7 +1,7 @@
-# Terraform Lab 7
+# Terraform - provisioners
 
 ## Overview 
-In this lab you will update `main.tf` to include provisioners.
+In this lab, you will update `main.tf` to include provisioners.
 
 Provisioners allow you to run shell scripts on the local machine, or remote resources. You can also use vendor provisioners from Chef, Puppet, and Salt.
 
@@ -22,12 +22,6 @@ Run the following to clean up the resources
 
 ```
 terraform destroy -auto-approve
-```
-
-Remove the `.terraform` directory to free up disk space
-
-```
-rm -rf .terraform
 ```
 
 
