@@ -1,4 +1,4 @@
-# Terraform Lab 8
+# Terraform - use modules
 
 ## Overview 
 In this lab, you will use modules from the Terraform Registry to provision an AWS environment. The concepts you use in this tutorial will apply to any modules from any source.
@@ -21,7 +21,7 @@ Now use modules to create an example AWS environment using a Virtual Private Clo
 
 Create working directory
 ```sh
-mkdir tf-lab5
+mkdir tf-lab8
 cd $_
 ```
 Clone the GitHub repository.
@@ -131,7 +131,7 @@ Add the following to `variables.tf`
 - type: `map(string)`
 
 - default: 
-    
+  
 - ```hcl
     {
     Terraform   = "true"

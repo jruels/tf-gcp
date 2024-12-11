@@ -1,4 +1,4 @@
-# Terraform Lab 10
+# Terraform - refactor monolithic to modular
 
 ## Overview 
 In this lab, you will refactor a monolithic Terraform configuration into a modular design. 
@@ -8,7 +8,7 @@ You will provision two instances of a web application hosted in an S3 bucket tha
 ## Start with a monolith configuration
 Create a working directory
 ```sh
-mkdir tf-lab6
+mkdir tf-lab10
 cd $_
 ```
 Clone the GitHub repository.
@@ -43,10 +43,10 @@ Review the `main.tf` file. The file consists of a few different resources:
 
 Terraform requires unique identifiers - in this case `prod` or `dev` for each `s3` resource - to create separate resources of the same type.
 
-Open the `terraform.tfvars.example` file in your repository and edit it with your own variable definitions. Change the `region` to your nearest location in your text editor.
+Open the `terraform.tfvars.example` file in your repository and edit it with your own variable definitions. Change the `region` to `us-west-1` in your text editor.
 
 ```hcl
-region = "us-east-1"
+region = "us-west-1"
 prod_prefix = "prod"
 dev_prefix = "dev"
 ```
@@ -426,5 +426,4 @@ terraform destroy -var-file=dev.tfvars
 ```
 
 ## Congrats!
-
 

@@ -1,4 +1,4 @@
-# Terraform Lab 9
+# Terraform - write your own module
 
 ## Overview
 
@@ -40,7 +40,7 @@ You also want to make sure and add the following to your ignore list. If you are
 Create working directory
 
 ```
-mkdir tf-lab5-a
+mkdir tf-lab9
 cd $_
 ```
 
@@ -270,9 +270,3 @@ You have now configured and used your own module to create a static website.
 ## Cleanup
 
 Now clean everything up by running `terraform destroy -auto-approve`
-
-Remove the `.terraform` directory to free up disk space
-
-```
-rm -rf .terraform
-```
