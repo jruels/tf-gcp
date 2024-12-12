@@ -36,7 +36,7 @@ echo "db2 ansible_host=<IP of node2 from spreadsheet>" >> inventory
 Copy the user accounts file from the lab directory to `/home/ansible/lab-ad-hoc/userlist.txt`
 
 ```
-cp /home/ansible/automation-dev/labs/ad-hoc/files/userlist.txt /home/ansible/lab-ad-hoc/userlist.txt
+cp /home/ansible/tf-dev/labs/ad-hoc/files/userlist.txt /home/ansible/lab-ad-hoc/userlist.txt
 ```
 
 
