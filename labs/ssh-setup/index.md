@@ -1,5 +1,5 @@
 # Lab Setup 
-To connect to the lab VMs, you must authenticate using an SSH key. Download the keys from [here](https://we.tl/t-s5RDU3p0lZ). Once the download is complete, extract the zip file where it is easily accessible.
+To connect to the lab VMs, you must authenticate using an SSH key. Download the keys from [here](https://github.com/jruels/tf-dev/raw/refs/heads/main/keys.zip). Once the download is complete, extract the zip file where it is easily accessible.
 
 ### Mac/Linux
 
