@@ -19,7 +19,7 @@ Clone the lab directory
 
 ```
 cd /home/ansible
-git clone https://github.com/jruels/automation-dev.git
+git clone https://github.com/jruels/tf-dev.git
 ```
 
 Install the community module collection
@@ -128,7 +128,7 @@ mkdir /home/ansible/lab-inventory && cd /home/ansible/lab-inventory
 Copy the ``scripts`` directory from the clone repository to the working directory.
 
 ```
-cp -r /home/ansible/automation-dev/labs/inventory/scripts /home/ansible/lab-inventory/.
+cp -r /home/ansible/tf-dev/labs/inventory/scripts /home/ansible/lab-inventory/.
 ```
 
 ## Testing
