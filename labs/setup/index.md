@@ -1,5 +1,5 @@
 # Lab Setup 
-To connect to the lab VMs, you must authenticate using an SSH key. Download the keys from [here](https://we.tl/t-dUYV7V2uFC). Once the download is complete, extract the zip file somewhere you can easily access it.
+To connect to the lab VMs, you must authenticate using an SSH key. Download the keys from [here](https://we.tl/t-s5RDU3p0lZ). Once the download is complete, extract the zip file somewhere you can easily access it.
 
 ### Mac/Linux
 
