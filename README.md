@@ -17,3 +17,10 @@ Lab 7: [Provisioners](labs/tf-provisioner)
 Lab 8: [Use registry modules](labs/tf-module)   
 Lab 9: [Write your own module](labs/tf-write-module)   
 Lab 10: [Refactor monolithic codebase](labs/tf-refactor)   
+
+### Day 4
+Lab 10: [Access Ansible VMs](labs/setup)   
+Lab 11: [Install Ansible](labs/setup-ansible)   
+Lab 12: [Ansible inventory](labs/inventory)   
+Lab 13: [Ansible ad-hoc](labs/ad-hoc)   
+Lab 14: [Ansible playbook fundamentals](labs/playbook-fun)   
