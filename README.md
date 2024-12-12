@@ -19,7 +19,7 @@ Lab 9: [Write your own module](labs/tf-write-module)
 Lab 10: [Refactor monolithic codebase](labs/tf-refactor)   
 
 ### Day 4
-[Ansible VM Info](ansible-vms.md)
+[Ansible VM Info](ansible-vms.md)   
 Lab 10: [Access Ansible VMs](labs/setup)   
 Lab 11: [Install Ansible](labs/setup-ansible)   
 Lab 12: [Ansible inventory](labs/inventory)   
