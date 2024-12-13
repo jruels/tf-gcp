@@ -41,7 +41,7 @@ First, we'll specify our **host** and **tasks** (**name**, and **debug** message
 
 ### Add connection failure logic
 
-We need to reconfigure a bit here, adding a **block** keyword and a **rescue**, in case the URL we're reaching out to is down:
+We need to reconfigure a bit here, adding a **block** keyword and a **rescue** in case the URL we're reaching out to is down:
 
 ```yaml
 ---
@@ -61,7 +61,7 @@ We need to reconfigure a bit here, adding a **block** keyword and a **rescue**, 
 
 ### Add an always message
 
-An **always** block here will let us know that the playbook at least made an attempt to download the file:
+An **always** block here will let us know that the playbook at least attempted to download the file:
 
 ```yaml
 ---
@@ -81,7 +81,7 @@ An **always** block here will let us know that the playbook at least made an att
 
 ### Replace '#BLANKLINE' with '\n'
 
-We can use the **replace** module for this task, and we'll sneak it in between the **get_url** and first **debug** tasks.
+We can use the **replace** module for this task and sneak it between the **get_url** and first **debug** tasks.
 
 ```yaml
 ---
@@ -120,7 +120,7 @@ cat /home/ansible/lab-error-handling/transaction_list
 After confirming the playbook successfully downloads and updates the `transaction_list` file, pull the latest changes from the repository, and run the `break_stuff.yml` playbook in the `maint` directory to simulate an unreachable host. 
 
 ```
-cd ~/automation-dev && git pull
+cd ~/tf-dev && git pull
 ```
 
 Add the `ansible` user to the `sudoers` file. 
@@ -148,7 +148,7 @@ sudo su - ansible
 ```
 
 ```sh
-ansible-playbook ~/automation-dev/labs/error-handling/maint/break_stuff.yml --tags service_down
+ansible-playbook ~/tf-dev/labs/error-handling/maint/break_stuff.yml --tags service_down
 ```
 
 Confirm the host is no longer reachable 
@@ -163,7 +163,7 @@ Run the playbook again and confirm it gracefully handles the failure.
 Restore the service using `break_stuff.yml`, and confirm the `report.yml` playbook reports the service is back online.
 
 ```
-ansible-playbook ~/automation-dev/labs/error-handling/maint/break_stuff.yml --tags service_up
+ansible-playbook ~/tf-dev/labs/error-handling/maint/break_stuff.yml --tags service_up
 ```
 
 ```

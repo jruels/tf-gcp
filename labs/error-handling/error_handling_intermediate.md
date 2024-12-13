@@ -18,7 +18,7 @@ Task list:
 After confirming the playbook successfully downloads and updates the `transaction_list` file, pull the latest changes from the repository, and run the `break_stuff.yml` playbook in the `maint` directory to simulate an unreachable host.
 
 ```
-cd ~/automation-dev && git pull
+cd ~/tf-dev && git pull
 ```
 
 ```
