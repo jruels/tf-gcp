@@ -20,8 +20,12 @@ Lab 10: [Refactor monolithic codebase](labs/tf-refactor)
 
 ### Day 4
 [Ansible VM Info](ansible-vms.md)   
-Lab 10: [Access Ansible VMs](labs/ssh-setup)   
-Lab 11: [Install Ansible](labs/setup-ansible)   
-Lab 12: [Ansible inventory](labs/inventory)   
-Lab 13: [Ansible ad-hoc](labs/ad-hoc)   
-Lab 14: [Ansible playbook fundamentals](labs/playbook-fun)   
+Lab 11: [Access Ansible VMs](labs/ssh-setup)   
+Lab 12: [Install Ansible](labs/setup-ansible)   
+Lab 13: [Ansible inventory](labs/inventory)   
+Lab 14: [Ansible ad-hoc](labs/ad-hoc)   
+Lab 15: [Ansible playbook fundamentals](labs/playbook-fun)   
+
+### Day 5
+Lab 16: [Ansible handling](labs/error-handling)   
+Lab 17: [Write a custom Terraform provider](labs/write-custom-provider)   
