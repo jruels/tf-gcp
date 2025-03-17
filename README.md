@@ -30,6 +30,10 @@ This site includes the information for the Terraform Developer class.
 
 [Setup VM](labs/setup.md)
 
+### Day 1 
+[Courseware](https://github.com/jruels/tf-dev/raw/refs/heads/main/Go%20courseware%20and%20labs/Courseware%20Day%201.zip)
+[Labs](https://github.com/jruels/tf-dev/raw/refs/heads/main/Go%20courseware%20and%20labs/Go%20Foundation%20Files.zip)
+
 ### Day 2
 Lab 1: [Terraform - Create an instance](labs/tf-first-instance)    
 Lab 2: [Variables and output](labs/tf-variables-and-output)   
