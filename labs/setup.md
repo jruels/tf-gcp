@@ -1,6 +1,6 @@
 # Setup Student VM's
 
-### Launch VS Code in Administrator Mode to Install software in a Terminal window
+### Launch VS Code in Administrator Mode to install software in a Terminal window
 
 ### Step 1: Run VS Code as Administrator
 1. Close any open instances of Visual Studio Code.
@@ -16,39 +16,7 @@
 
 ---
 
-### **Step 3: Set Execution Policy**
-1. Check the current execution policy by running:
-   ```powershell
-   Get-ExecutionPolicy
-   ```
-2. If the policy is not `AllSigned` or `Bypass`, set it to `Bypass` temporarily:
-   ```powershell
-   Set-ExecutionPolicy Bypass -Scope Process -Force
-   ```
-
----
-
-## Install Chocolatey
-
-### **Step 4: Install Chocolatey**
-1. Run the following command in the terminal:
-   ```powershell
-   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-   ```
-2. Wait for the script to complete. Chocolatey will be installed on your system.
-
----
-
-### **Step 5: Verify the Installation**
-1. Test that Chocolatey is installed by running:
-   ```powershell
-   choco --version
-   ```
-   - This should display the installed version of Chocolatey.
-
----
-
-### **Step 6: Use Chocolatey to install needed packages**
+### **Step 3: Use Chocolatey to install needed packages**
 1. Install some required packages:
    ```powershell
    choco install git wget awscli terraform -y
@@ -56,7 +24,7 @@
 ---
 
 ### **Important Note:**
-Always remember to run VS Code in **Administrator mode** whenever you need to use Chocolatey for installing or managing software that requires system-level changes.
+Always run VS Code in **Administrator mode** whenever you need to use Chocolatey to install or manage software that requires system-level changes.
 
 # Install Terraform extension for VSCode
 
