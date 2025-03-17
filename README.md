@@ -32,7 +32,19 @@ This site includes the information for the Terraform Developer class.
 
 ### Day 1 
 [Courseware](https://github.com/jruels/tf-dev/raw/refs/heads/main/Go%20courseware%20and%20labs/Courseware%20Day%201.zip)
-[Labs](https://github.com/jruels/tf-dev/raw/refs/heads/main/Go%20courseware%20and%20labs/Go%20Foundation%20Files.zip)
+
+## Day 1 labs 
+To access the lab files, please open Visual Studio Code on the provided Windows VM and complete the following steps. 
+
+1. Right click the PowerShell icon in the taskbar and select "Run as Administrator"
+2. In the new PowerShell window install Git `choco install -y git`
+3. After installing Git close PowerShell and Open Visual Studio Code
+4. In the Visual Studio Code sidebar click the third icon down "Source Control"
+5. Click "Clone repository" and enter the `https://github.com/jruels/tf-dev`
+6. In the File Explorer window that pops up, create a new folder "repos" and select it. 
+7. After the repository is done cloning, In Visual Studio Code click the top icon on the left sidebar "Explorer" and expand "Go Foundation" to access the Go lab files.
+
+
 
 ### Day 2
 Lab 1: [Terraform - Create an instance](labs/tf-first-instance)    
