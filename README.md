@@ -6,27 +6,27 @@ This site includes the information for the Terraform Developer class.
 
 | Name                 | Username    | Virtual Machine Password | Virtual Machine Portal                  |
 |----------------------|------------|--------------------------|-----------------------------------------|
-| Angelina Amato       | WNS2022-01  | tEKwns2022!              | [https://my.ablazedesktop.com](https://my.ablazedesktop.com) |
-| Arman Avetisyan      | WNS2022-02  | tEKwns2022!              |                                         |
-| Sourav Bhattacharya  | WNS2022-03  | tEKwns2022!              |                                         |
-| Wogayehu Gebremariam | WNS2022-04  | tEKwns2022!              |                                         |
-| Murugan Gnanasekaran | WNS2022-05  | tEKwns2022!              |                                         |
-| Shaaheen Farahmand   | WNS2022-06  | tEKwns2022!              |                                         |
-| Frederick Malloy     | WNS2022-07  | tEKwns2022!              |                                         |
-| Kyle Margrave        | WNS2022-08  | tEKwns2022!              |                                         |
-| Carilyn McCall       | WNS2022-09  | tEKwns2022!              |                                         |
-| LaTonya McILwain     | WNS2022-10  | tEKwns2022!              |                                         |
-| Andy Nadarewistsch   | WNS2022-11  | tEKwns2022!              |                                         |
-| Mani Nagarajan       | WNS2022-12  | tEKwns2022!              |                                         |
-| Reed O'Neal          | WNS2022-13  | tEKwns2022!              |                                         |
-| Rosemary Otalor      | WNS2022-14  | tEKwns2022!              |                                         |
-| Hardik Patel         | WNS2022-15  | tEKwns2022!              |                                         |
-| Rob Sletten          | WNS2022-16  | tEKwns2022!              |                                         |
-| Anupama Subramany    | WNS2022-17  | tEKwns2022!              |                                         |
-| Son Thach           | WNS2022-18  | tEKwns2022!              |                                         |
-| Arjun Thimmareddy   | WNS2022-19  | tEKwns2022!              |                                         |
-| Lavanya Veluru      | WNS2022-20  | tEKwns2022!              |                                         |
-| Instructor          | WNS2022-21  | tEKwns2022!              |                                         |
+| Angelina Amato       | WNS2022-01  | tekWNS2022!              | [https://my.ablazedesktop.com](https://my.ablazedesktop.com) |
+| Arman Avetisyan      | WNS2022-02  | tekWNS2022!              |                                         |
+| Sourav Bhattacharya  | WNS2022-03  | tekWNS2022!              |                                         |
+| Wogayehu Gebremariam | WNS2022-04  | tekWNS2022!              |                                         |
+| Murugan Gnanasekaran | WNS2022-05  | tekWNS2022!              |                                         |
+| Shaaheen Farahmand   | WNS2022-06  | tekWNS2022!              |                                         |
+| Frederick Malloy     | WNS2022-07  | tekWNS2022!              |                                         |
+| Kyle Margrave        | WNS2022-08  | tekWNS2022!              |                                         |
+| Carilyn McCall       | WNS2022-09  | tekWNS2022!              |                                         |
+| LaTonya McILwain     | WNS2022-10  | tekWNS2022!              |                                         |
+| Andy Nadarewistsch   | WNS2022-11  | tekWNS2022!              |                                         |
+| Mani Nagarajan       | WNS2022-12  | tekWNS2022!              |                                         |
+| Reed O'Neal          | WNS2022-13  | tekWNS2022!              |                                         |
+| Rosemary Otalor      | WNS2022-14  | tekWNS2022!              |                                         |
+| Hardik Patel         | WNS2022-15  | tekWNS2022!              |                                         |
+| Rob Sletten          | WNS2022-16  | tekWNS2022!              |                                         |
+| Anupama Subramany    | WNS2022-17  | tekWNS2022!              |                                         |
+| Son Thach           | WNS2022-18  | tekWNS2022!              |                                         |
+| Arjun Thimmareddy   | WNS2022-19  | tekWNS2022!              |                                         |
+| Lavanya Veluru      | WNS2022-20  | tekWNS2022!              |                                         |
+| Instructor          | WNS2022-21  | tekWNS2022!              |                                         |
 
 [Setup VM](labs/setup.md)
 
