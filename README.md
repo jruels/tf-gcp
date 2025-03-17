@@ -33,7 +33,7 @@ This site includes the information for the Terraform Developer class.
 ### Day 1 
 [Courseware](https://github.com/jruels/tf-dev/raw/refs/heads/main/Go%20courseware%20and%20labs/Courseware%20Day%201.zip)
 
-## Day 1 labs 
+#### Day 1 labs 
 To access the lab files, please open Visual Studio Code on the provided Windows VM and complete the following steps. 
 
 1. Right click the PowerShell icon in the taskbar and select "Run as Administrator"
