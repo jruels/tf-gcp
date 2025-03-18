@@ -91,3 +91,8 @@ Always run VS Code in **Administrator mode** whenever you need to use Chocolatey
 
 2. You should see your account information returned.
 
+
+
+## Congratulations
+
+Congratulations, you've successfully configured your environment for working with AWS and Terraform.
