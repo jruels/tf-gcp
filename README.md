@@ -44,6 +44,8 @@ To access the lab files, please open Visual Studio Code on the provided Windows 
 6. In the File Explorer window that pops up, create a new folder "repos" and select it. 
 7. After the repository is done cloning, In Visual Studio Code click the top icon on the left sidebar "Explorer" and expand "Go Foundation" to access the Go lab files.
 
+## Lab details 
+[Cloud & Ansible machine info](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
 
 
 ### Day 2
