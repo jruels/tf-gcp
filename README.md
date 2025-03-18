@@ -8,11 +8,11 @@ This site includes the information for the Terraform Developer class.
 |----------------------|------------|--------------------------|-----------------------------------------|
 | Angelina Amato       | WNS2022-01  | tekWNS2022!              | [https://my.ablazedesktop.com](https://my.ablazedesktop.com) |
 | Arman Avetisyan      | WNS2022-02  | tekWNS2022!              |                                         |
-| Sourav Bhattacharya  | WNS2022-03  | tekWNS2022!              |                                         |
+| Daniel Dunn          | WNS2022-03  | tekWNS2022!              |                                         |
 | Wogayehu Gebremariam | WNS2022-04  | tekWNS2022!              |                                         |
 | Murugan Gnanasekaran | WNS2022-05  | tekWNS2022!              |                                         |
 | Shaaheen Farahmand   | WNS2022-06  | tekWNS2022!              |                                         |
-| Frederick Malloy     | WNS2022-07  | tekWNS2022!              |                                         |
+| Dave                 | WNS2022-07  | tekWNS2022!              |                                         |
 | Kyle Margrave        | WNS2022-08  | tekWNS2022!              |                                         |
 | Carilyn McCall       | WNS2022-09  | tekWNS2022!              |                                         |
 | LaTonya McILwain     | WNS2022-10  | tekWNS2022!              |                                         |
