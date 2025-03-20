@@ -63,13 +63,11 @@ Lab 9: [Write your own module](labs/tf-write-module)
 Lab 10: [Refactor monolithic codebase](labs/tf-refactor)   
 
 ### Day 4
-[Ansible VM Info](ansible-vms.md)   
 Lab 11: [Access Ansible VMs](labs/ssh-setup)   
-Lab 12: [Install Ansible](labs/setup-ansible)   
-Lab 13: [Ansible inventory](labs/inventory)   
-Lab 14: [Ansible ad-hoc](labs/ad-hoc)   
-Lab 15: [Ansible playbook fundamentals](labs/playbook-fun)   
+Lab 12: [Install Ansible Tower](labs/install-aap/)  
+Lab 13: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/)  
+Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)  
 
 ### Day 5
 Lab 16: [Ansible handling](labs/error-handling)   
-Lab 17: [Write a custom Terraform provider](labs/write-custom-provider)   
+Lab 17: [Write custom Terraform providers](labs/write-custom-provider)   
