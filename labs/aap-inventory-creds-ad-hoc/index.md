@@ -87,6 +87,29 @@ Confirm you can ssh as the `ansible` user from the **control** node to the **man
 ssh <IP of each node from the spreadsheet>
 ```
 
+## Configure `sudo` Access for Ansible
+
+Now, we'll configure sudo access for Ansible on `node1` and `node2` such that Ansible may use sudo for any command with no password prompt.
+
+Log in to each **managed** node as `ec2-user` and edit the `sudoers` file to contain appropriate access for the `ansible` user:
+
+```
+sudo visudo
+```
+
+Add the following line anywhere in the file and save it:
+
+```
+ansible    ALL=(ALL)       NOPASSWD: ALL
+```
+
+Enter:
+
+```
+exit
+```
+
+Repeat these steps for `node2`
 
 
 ## Create an Inventory
