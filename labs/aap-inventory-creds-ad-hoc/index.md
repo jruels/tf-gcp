@@ -36,6 +36,59 @@ ssh-keygen
 
 
 
+### Configure the `ansible` user on the Managed Hosts
+
+Log in to each **managed** node as the `ec2-user` user and run:
+
+```
+sudo useradd ansible
+```
+
+Copy the public key to both **managed nodes** provided by the instructor:
+
+On the **Control** Node, copy the output of:
+
+```
+cat /home/ansible/.ssh/id_rsa.pub
+```
+
+
+
+Log in to each **managed** node, become the `ansible` user, and add the key to the `authorized_keys` file.
+
+
+Become the `ansible` user:
+
+```
+sudo su - ansible 
+```
+
+Use `ssh-keygen`, accepting defaults, to create the `.ssh` directory
+
+```
+ssh-keygen
+```
+
+Now, create the `authorized_keys` file and paste the copied output from above into it.
+
+```
+echo "<copied output from above>" > /home/ansible/.ssh/authorized_keys
+```
+
+Set the correct permissions
+
+```
+chmod 600 /home/ansible/.ssh/authorized_keys
+```
+
+Confirm you can ssh as the `ansible` user from the **control** node to the **managed** nodes
+
+```
+ssh <IP of each node from the spreadsheet>
+```
+
+
+
 ## Create an Inventory
 
 Let’s get started: The first thing we need is an inventory of managed hosts. This is the equivalent of an inventory file in Ansible Engine. There is a lot more to it (like dynamic inventories) but let’s start with the basics.
