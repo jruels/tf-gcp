@@ -775,10 +775,11 @@ provider "customs3" {
 }
 
 resource "customs3_s3_bucket" "test" {
-  name = "my-test-bucket-123"
-  tags = {
-    Environment = "test"
-  }
+  buckets = [{
+    name = "test-bucket-2398756"
+    tags = "yourbucket"
+  }]
+}
 }
 ```
 
