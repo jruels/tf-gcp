@@ -780,7 +780,6 @@ resource "customs3_s3_bucket" "test" {
     tags = "yourbucket"
   }]
 }
-}
 ```
 
 ### 3. Plan and Apply
