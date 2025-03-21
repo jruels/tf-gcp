@@ -738,6 +738,7 @@ func (r *orderResource) Configure(_ context.Context, req resource.ConfigureReque
 
 Windows:
 ```powershell
+go mod tidy
 go build -o terraform-provider-custom-s3.exe
 move terraform-provider-custom-s3.exe %USERPROFILE%\go\bin\
 ```
