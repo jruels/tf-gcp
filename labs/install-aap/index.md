@@ -4,6 +4,38 @@
 
 ### Prerequisites
 
+Ansible Automation Platform (AAP), requires your code be stored in version control. We are going to create a GitHub repository for our Ansible playbooks.
+
+
+
+#### Create a new Repository in your personal GitHub Account.
+
+Inside the Windows VM complete the following steps.
+
+1. Log in or Create a new account [GitHub](https://github.com/) account
+2. Click New Repository
+3. Name the reposistory `ansible-working`
+4. Check the `Add a README file` checkbox
+5. Click the `Create Repository` button
+6. In the new repository click the `code` button to expose the `https url` for the repository
+7. Click the copy button to copy the `https url` for the repo to use in the next step.
+
+
+
+#### Open the newly created repository in VS Code
+
+1. Launch a new VS Code Window.
+2. Select the Source Control Tab from the toolbar on the left
+3. In the top of the VS Code window click the search bar.
+4. Type: `> clone` and choose `Git: Clone`
+5. Paste the URL to newly created Repo
+6. In the choose a folder dialog, select your `repos` folder.
+7. Click the `select as Repository Destination` button
+8. In the Visual Studio Code dialog click the `Add to Workspace` button to open the repository in VS Code
+9. In the left Toolbar click the Explorer button.
+
+
+
 #### Red Hat Developer account
 
 Go to the [Red Hat Developer portal](https://developers.redhat.com/about), click "Join now," and fill out the form. 
@@ -35,22 +67,15 @@ Navigate to the [Registry Service Account Management Application](https://access
    - Note the username, including the prepended string (i.e. `XXXXXXX|username`). This is the username that should be used to log in to registry.redhat.io in the `inventory` file.
    - Note the password. This is the password that should be used to authenticate to [registry.redhat.io.](https://registry.redhat.io) in the `inventory` file.
 
-   
 
-Log in to the control node as `ec2-user` 
+
+
+
 
 **RUN ON THE CONTROL NODE**
 
 
 ### Install Automation Platform 
-
-
-Install `subscription-manager`
-
-```bash
-sudo yum install -y subscription-manager
-```
-
 
 
 Register VM with Red Hat package repos
@@ -63,83 +88,23 @@ sudo subscription-manager register --auto-attach
 
 When prompted, provide your Red Hat Developer username and password.
 
-Click [Here](https://access.redhat.com/downloads/content/480) to download the Ansible Automation Platform installer. 
-
-* Log in to the portal 
-
-* At the top, select  version 2.4 for `RHEL 9`
-
-* Click the "Download Now" link on the "Bundle" installer
-
-  ![image-20220913022904472](images/image-20220913022904472.png)
-  
-  
-
-Copy the installer to the lab VM. 
-
-## Macos/Linux
-Use `scp` to copy the setup file from your local machine to the Ansible Control node.
-
-
-
-## Windows
-
-Copy the installer to the lab VM using WinSCP:
-
-
-Create a new connection to the lab server:
-
-- Change File protocol to SCP
-- Enter the Hostname of the Lab VM
-- Enter the username provided by the instructor
-
-![img](https://winscp-static-746341.c.cdn77.org/data/media/screenshots/login.png?v=6990)
-
-
-
-Configure SSH Key Authentication:
-
-* Browse the key provided by the instructor.
-
-![img](https://winscp-static-746341.c.cdn77.org/data/media/screenshots/login_authentication.png?v=6990)
-
-
-
-After connecting, copy the download setup file to the Lab VM in `/home/ec2-user`
-
-<img src="https://winscp-static-746341.c.cdn77.org/data/media/screenshots/commander.png?v=6990" alt="img" style="zoom:85%;" />
-
-
-
-Connect to the server using SSH
-
-
-
-Extract the installer 
-
-If the file is a ``.tar`` run:
-
-```bash
-tar -xvf ansible-automation-platform-setup-*.tar
-```
-
-If the file is a `.tar.gz` run:
-
-```bash
-tar -zxvf ansible-automation-platform-setup-*.tar.gz
-```
+The installation file has already been copied to the `/home/ansible` directory. 
 
 
 
 Enter directory 
 
 ```bash
-cd ansible-automation-platform-setup-<version>
+cd /home/ansible/ansible-automation-platform-setup-bundle-2.4-7.5-x86_64
 ```
 
 
 
 The latest version of AAP does not support installation on `localhost`. Due to this, we need to add the following to `/etc/hosts`
+
+
+
+We can't use VS Code for this because we must edit the file with elevated privileges in the terminal.
 
 Using `sudo` open `/etc/hosts` in your favorite editor. 
 
@@ -161,7 +126,7 @@ Save the file and run the following to test.
 ping aap.localhost.com
 ```
 
-
+After confirming it resolves to `127.0.0.1`, type `ctrl+c` to stop the `ping`
 
 Delete the original inventory file
 
@@ -171,7 +136,7 @@ rm -rf inventory
 
 
 
-Create a new `inventory` file and paste the following into it.
+In the `ansible-automation-platform-setup-bundle-2.4-7.5-x86_64` folder, create a new `inventory` file and paste the following.
 
 ```
 [automationcontroller]
@@ -216,7 +181,7 @@ sudo ./setup.sh -e required_ram=2048
 
 
 
-After the script above completes, you can access the Dashboard at the following URL (replacing `Server IP` with your lab VM IP)  
+After the script above completes, you can access the Dashboard at the following URL (replacing `Server IP` with your Controller lab VM IP)  
 
 https://[Server IP from spreadsheet]
 
@@ -234,7 +199,7 @@ Log into the dashboard with the username `admin` and the password you specified 
 
 
 
-You will see a screen asking to register Automation Platform. Log in with your developer credentials.
+You will see a screen asking to register Automation Platform. Log in with your Red Hat developer credentials.
 
 <img src="images/image-20220222022946979.png" alt="image-20220222022946979" style="zoom: 33%;" />
 

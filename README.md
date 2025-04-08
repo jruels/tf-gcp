@@ -37,7 +37,7 @@ Lab 9: [Write your own module](labs/tf-write-module)
 Lab 10: [Refactor monolithic codebase](labs/tf-refactor)   
 
 ### Day 4
-Lab 11: [Access Ansible VMs](labs/ssh-setup)   
+Lab 11: [Access Ansible VMs](labs/ansible-setup)   
 Lab 12: [Install Ansible Tower](labs/install-aap/)  
 Lab 13: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/)  
 Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)  
