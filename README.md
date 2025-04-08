@@ -2,32 +2,6 @@
 
 This site includes the information for the Terraform Developer class.
 
-## Windows VM credentials 
-
-| Name                 | Username    | Virtual Machine Password | Virtual Machine Portal                  |
-|----------------------|------------|--------------------------|-----------------------------------------|
-| Angelina Amato       | WNS2022-01  | tekWNS2022!              | [https://my.ablazedesktop.com](https://my.ablazedesktop.com) |
-| Arman Avetisyan      | WNS2022-02  | tekWNS2022!              |                                         |
-| Daniel Dunn          | WNS2022-03  | tekWNS2022!              |                                         |
-| Wogayehu Gebremariam | WNS2022-04  | tekWNS2022!              |                                         |
-| Murugan Gnanasekaran | WNS2022-05  | tekWNS2022!              |                                         |
-| Shaaheen Farahmand   | WNS2022-06  | tekWNS2022!              |                                         |
-| Dave                 | WNS2022-07  | tekWNS2022!              |                                         |
-| Kyle Margrave        | WNS2022-08  | tekWNS2022!              |                                         |
-| Carilyn McCall       | WNS2022-09  | tekWNS2022!              |                                         |
-| LaTonya McILwain     | WNS2022-10  | tekWNS2022!              |                                         |
-| Andy Nadarewistsch   | WNS2022-11  | tekWNS2022!              |                                         |
-| Mani Nagarajan       | WNS2022-12  | tekWNS2022!              |                                         |
-| Reed O'Neal          | WNS2022-13  | tekWNS2022!              |                                         |
-| Rosemary Otalor      | WNS2022-14  | tekWNS2022!              |                                         |
-| Hardik Patel         | WNS2022-15  | tekWNS2022!              |                                         |
-| Rob Sletten          | WNS2022-16  | tekWNS2022!              |                                         |
-| Anupama Subramany    | WNS2022-17  | tekWNS2022!              |                                         |
-| Son Thach           | WNS2022-18  | tekWNS2022!              |                                         |
-| Arjun Thimmareddy   | WNS2022-19  | tekWNS2022!              |                                         |
-| Lavanya Veluru      | WNS2022-20  | tekWNS2022!              |                                         |
-| Instructor          | WNS2022-21  | tekWNS2022!              |                                         |
-
 [Setup VM](labs/setup.md)
 
 ### Day 1 
