@@ -7,8 +7,8 @@ If you haven't already done so, clone the git repository to your local machine u
 Windows users can use the built-in PowerShell SSH client to test the connection to the lab servers.
 ### PowerShell
 
-Open a Terminal session in Visual Studio Code and `cd` to the extracted lab directory. Inside the directory, you will see a `keys` directory. Enter it using `cd` and run the following commands.
-[Ansible VM information](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=1973346361#gid=1973346361)
+Open a Terminal session in Visual Studio Code and `cd` to the extracted lab directory. Inside the directory, you will see a `keys` directory. Enter it using `cd` and run the following commands.   
+* [Ansible VM information](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=1973346361#gid=1973346361)
 
 ```
 ssh -i lab.pem ansible@<Tower VM IP from the spreadsheet> 
