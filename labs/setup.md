@@ -97,7 +97,12 @@ Restart VS Code to update the path to see the newly installed applications.
 
 ### **Step 2: Use AWS Configure**
 
-1. Run `aws configure` in the Visual Studio Code terminal. 
+1. In the Visual Studio Code Terminal run: 
+
+   ```
+   aws configure
+   ``` 
+
 2. Supply the required information.
    * Credentials 
    * Region = `us-west-1`
