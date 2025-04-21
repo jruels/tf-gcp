@@ -5,8 +5,8 @@ This site includes the information for the Terraform Developer class.
 
 
 ## Lab details 
-[Cloud & Ansible machine info](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
-
+[Windows VM information](VM_access.md)  
+[Lab environment details](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
 
 ### Day 1   
 Lab 0: [Setup VM](labs/setup.md)   
@@ -15,25 +15,3 @@ Lab 2: [Variables and output](labs/tf-variables-and-output)
 Lab 3: [Multi resource deployment](labs/tf-more-variables)   
 Lab 4: [Strings, bool, and numbers](labs/tf-even-more-variables)   
 Lab 5: [Enable remote state](labs/tf-remote-state)   
-
-### Day 2
-Lab 6: [Import existing resources](labs/tf-import)   
-Lab 7: [Provisioners](labs/tf-provisioner)   
-Lab 8: [Use registry modules](labs/tf-module)   
-Lab 9: [Write your own module](labs/tf-write-module)   
-Lab 10: [Refactor monolithic codebase](labs/tf-refactor)   
-
-### Day 3
-Lab 11: [Access Ansible VMs](labs/ansible-setup)   
-Lab 12: [Install Ansible Tower](labs/install-aap/)  
-Lab 13: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/)  
-Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)  
-Lab 15: [Ansible handling](labs/error-handling)   
-
-### Day 4   
-Go labs: [Path-to-Go-labs]   
-
-### Day 5
-Lab 16: [Write a custom "Hello World" provider](labs/hello-world-provider)   
-Lab 17: [Write a custom PostgreSQL provider](labs/postgres-provider)   
-Lab 18: [Write a custom AWS S3 provider](labs/custom-s3-provider)   
