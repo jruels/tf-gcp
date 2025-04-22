@@ -8,33 +8,37 @@ Open the [Terraform Registry page for the VPC module](https://registry.terraform
 
 ![vpc-module](images/vpc_module.png)
 
-You will see information about the module, as well as a link to the source repository. On the right side of the page, you will see a dropdown interface to select the module version, as well as instructions to use the module to provision infrastructure.
+You will see information about the module and a link to the source repository. On the right side of the page, you will see a drop-down interface to select the module version and instructions for using it to provision infrastructure.
 
-When calling a module, the `source` argument is required. In this example, Terraform will search for a module in the Terraform registry that matches the given string. You could also use a URL or local file path for the source of your modules.
+When calling a module, the `source` argument is required. In this example, Terraform will search for a module that matches the given string in the Terraform registry. You could also use a URL or local file path for the source of your modules.
 
-The other argument shown here is the `version`. For supported sources, the version will let you define which version or versions of the module will be loaded. In this lab, you will specify an exact version number for the modules you use. 
+The other argument shown here is the `version`. For supported sources, the version will let you define which version or versions of the module will be loaded. In this lab, you will specify the exact version number of the modules you use. 
 
 Other arguments to module blocks are treated as input variables to the modules.
 
 ## Create Terraform configuration
 Now use modules to create an example AWS environment using a Virtual Private Cloud (VPC) and two EC2 instances.
 
-Create working directory
-```sh
-mkdir tf-lab8
-cd $_
-```
+1. In **Visual Studio Code**, open the working directory, `terraform`.
+2. Right-click in the **Explorer** pane and select **New Folder**.
+3. Name the folder `tf-lab8`.
+
+In the new `tf-lab8` folder, click **Open in Integrated Terminal** and run the following to clone the GitHub repository:
+
+
+
 Clone the GitHub repository.
 ```sh
 git clone https://github.com/jruels/learn-terraform-modules.git
 ```
 
-Enter the directory.
-```sh
-cd learn-terraform-modules
-```
 
-Check out the `ec2-blank` tag into a local branch.
+
+Right-click the new folder,`learn-terraform-modules,` in the **Explorer** pane and select **Open in Integrated Terminal.**
+
+
+
+Run the following in the VS Code terminal to check out the `ec2-blank` tag into a local branch.
 
 ```sh
 git checkout tags/ec2-blank -b ec2-instances
@@ -44,19 +48,19 @@ Review the `main.tf` and you will see it includes four blocks:
 
 You will be familiar with the first two blocks, `terraform` and `provider`. We've used them many times in previous labs.
 
-- `module "vpc"` defines a Virtual Private Cloud (VPC), which will provide networking services for the rest of your infrastructure.
+- `module "vpc"` defines a Virtual Private Cloud (VPC) that will provide networking services for the rest of your infrastructure.
 - `module "ec2_instances"` defines two EC2 instances within your VPC.
 
 ## Set values for module input variables
-In order to use most modules, you will need to pass input variables to the module configuration. The configuration that calls a module is responsible for setting its input values, which are passed as arguments in the module block. Aside from `source` and `version`, most of the arguments to a module block will set variable values.
+You must pass input variables to the module configuration to use most modules. The configuration that calls a module is responsible for setting its input values, which are passed as arguments in the module block. Aside from `source` and `version`, most of the arguments to a module block will set variable values.
 
-On the Terraform registry page for the AWS VPC module, you will see an `Inputs` tab that describes all of the [input variables](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/2.21.0?tab=inputs) that module supports.
+On the Terraform registry page for the AWS VPC module, you will see an `Inputs` tab that describes all the [input variables](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/2.21.0?tab=inputs) that the module supports.
 
-Some input variables are required, meaning that the module doesn't provide a default value — an explicit value must be provided in order for Terraform to run correctly.
+Some input variables are required, meaning that the module doesn't provide a default value—an explicit value must be provided for Terraform to run correctly.
 
-The following variables should look familiar, we set some of these in a previous lab.
+The following variables should look familiar; we set some of these in a previous lab.
 
-Within the `module "vpc"` block, review the input variables you are setting. 
+Review the input variables you are setting within the module `vpc` block. 
 - `name` will be the name of the VPC within AWS
 - `cidr` describes the CIDR blocks used within your VPC.
 - `azs` are the availability zones that will be used for the VPC's subnets.
