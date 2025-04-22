@@ -71,10 +71,10 @@ Review the input variables you are setting within the module `vpc` block.
 
 NOTE: When creating EC2 instances, you need to specify a subnet and security group for them to use. This example will use the ones provided by the VPC module.
 
-## Define root input variables
-Using input variables with modules is very similar to how you use variables in any Terraform configuration. A common pattern is to identify which module input variables you might want to change in the future, and create matching variables in your configuration's `variables.tf` file with sensible default values. Those variables can then be passed to the module block as arguments.
+## Define root input variables.
+Using input variables with modules is very similar to using variables in any Terraform configuration. A common pattern is to identify which module input variables you might want to change in the future, and create matching variables in your configuration's `variables.tf` file with sensible default values. Those variables can then be passed to the module block as arguments.
 
-Not all module input variables need to be set using variables in your configuration. For instance, you might want this VPC to always have a NAT gateway enabled, because the application you are provisioning requires it. In that case, using a variable to set `enable_nat_gateway` would be counterproductive.
+Not all module input variables must be set using variables in your configuration. For instance, you might want this VPC to always have a NAT gateway enabled, because the application you are provisioning requires it. In that case, using a variable to set `enable_nat_gateway` would be counterproductive.
 
 You will need to define these variables in your configuration to use them.
 
