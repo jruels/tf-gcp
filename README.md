@@ -29,3 +29,6 @@ Lab 12: [Install Ansible Tower](labs/install-aap/)
 Lab 13: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/)  
 Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)  
 Lab 15: [Ansible handling](labs/error-handling)  
+
+### Day 4
+[Download Go Files](go_foundation_files.zip)
