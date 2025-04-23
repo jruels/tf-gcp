@@ -9,108 +9,6 @@ This exercise will cover
   - Ansible Automation Controller **Credentials**
 - Running ad hoc commands via the Ansible Automation Platform web UI
 
-## Prerequisites 
-
-### Configure the `ansible` user on the Control Node
-
-Add a new `ansible` user to the control node. This user will be used for running `ansible` tasks. 
-
-On the Controller node run: 
-
-```
-sudo useradd ansible
-```
-
-
-
-Configure the `ansible` user on the control node for ssh shared key access to the managed nodes.
-
-**Note:** Do not use a passphrase for the key pair.
-
-Create a key pair for the `ansible` user on the control host, accepting the defaults when prompted:
-
-```
-sudo su - ansible
-ssh-keygen 
-```
-
-
-
-### Configure the `ansible` user on the Managed Hosts
-
-Log in to each **managed** node as the `ec2-user` user and run:
-
-```
-sudo useradd ansible
-```
-
-Copy the public key to both **managed nodes** provided by the instructor:
-
-On the **Control** Node, copy the output of:
-
-```
-cat /home/ansible/.ssh/id_rsa.pub
-```
-
-
-
-Log in to each **managed** node, become the `ansible` user, and add the key to the `authorized_keys` file.
-
-
-Become the `ansible` user:
-
-```
-sudo su - ansible 
-```
-
-Use `ssh-keygen`, accepting defaults, to create the `.ssh` directory
-
-```
-ssh-keygen
-```
-
-Now, create the `authorized_keys` file and paste the copied output from above into it.
-
-```
-echo "<copied output from above>" > /home/ansible/.ssh/authorized_keys
-```
-
-Set the correct permissions
-
-```
-chmod 600 /home/ansible/.ssh/authorized_keys
-```
-
-Confirm you can ssh as the `ansible` user from the **control** node to the **managed** nodes
-
-```
-ssh <IP of each node from the spreadsheet>
-```
-
-## Configure `sudo` Access for Ansible
-
-Now, we'll configure sudo access for Ansible on `node1` and `node2` such that Ansible may use sudo for any command with no password prompt.
-
-Log in to each **managed** node as `ec2-user` and edit the `sudoers` file to contain appropriate access for the `ansible` user:
-
-```
-sudo visudo
-```
-
-Add the following line anywhere in the file and save it:
-
-```
-ansible    ALL=(ALL)       NOPASSWD: ALL
-```
-
-Enter:
-
-```
-exit
-```
-
-Repeat these steps for `node2`
-
 
 ## Create an Inventory
 
@@ -162,15 +60,13 @@ One of the great features of the Ansible Automation Platform is to make credenti
 
 > **TIP**:This is one of the most important features of Automation Platform: **Credential Separation**! Credentials are defined separately and not with the hosts or inventory settings.
 
-To access the new server we need to provide our SSH private key
+We need to configure the Ansible Automation Platform with the Controller SSH Private Key to enable it to connect to our managed nodes.
 
-Log into the control node as the `ec2-user` through SSH, sudo to the `ansible` user, and run the following command 
 
-```bash
-cat .ssh/id_rsa
-```
 
-Copy the **complete private key** (including “BEGIN” and “END” lines) , and save it for the next step.
+In the VS Code window that is connected to the Controller, expand `.ssh` and click `id_rsa`
+
+Copy the **complete private key** (including “BEGIN” and “END” lines) and save it for the next step.
 
 
 
