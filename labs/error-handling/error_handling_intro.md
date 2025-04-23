@@ -5,50 +5,102 @@ We have to set up automation to pull down a data file, from a notoriously unreli
 
 If the report is collected, the playbook should write and edit the file to replace all occurrences of `#BLANKLINE` with a line break '\n'.
 
-## Create playbook
+## Set up maintenance script
 
 ### Prerequisites
 
-Log in to the Control Node as `ec2-user` and sudo to the `ansible` user.
- ```
- sudo su - ansible
- ```
+### Create Projects
 
- Create and enter the working directory
+In Ansible Automation Platform, create a new project with the following: 
 
- ```
- mkdir /home/ansible/lab-error-handling && cd /home/ansible/lab-error-handling
- ```
+* Name: **automation-dev**
+* Source Control Type: **Git**
+* Source Control URL: **https://github.com/jruels/automation-dev.git**
+* Options: 
+  * **Clean**
+  * **Delete**
+  * **Update Revision on Launch**
 
 
 
-Create a playbook named `report.yml`
+Now, create a project with your `ansible-working` repository
+
+* Name: **ansible-working**
+* Source Control Type: **Git**
+* Source Control URL: https://github.com/[YOUR_USERNAME]/ansible-working.git
+* Options: 
+  * **Clean**
+  * **Delete**
+  * **Update Revision on Launch**
+
+### Create templates
+
+Create a template with the following to simulate a down service: 
+
+* Name: **service_down**
+* Inventory: **First Inventory**
+* Project: **automation-dev**
+* Execution Environment: **Default execution environment**
+* Playbook: **labs/error-handling/maint/break_stuff.yml**
+* Credentials: **Linux credentials**
+* Job Tags: **service_down**
+* Privilege Escalation: **Check the box**
+
+
+
+Create a template with the following to restore the service: 
+
+* Name: **service_up**
+* Inventory: **First Inventory**
+* Project: **automation-dev**
+* Execution Environment: **Default execution environment**
+* Playbook: **labs/error-handling/maint/break_stuff.yml**
+* Credentials: **Linux credentials**
+* Job Tags: **service_up**
+* Privilege Escalation: **Check the box**
+
+
+
+## Create the playbook
+
+In VS Code, open your `ansible-working` repository.
+
+Create a playbook named `report.yml` with the following:
 
 First, we'll specify our **host** and **tasks** (**name**, and **debug** message):
 
 ```yaml
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - name: download transaction_list
-      get_url:
-        url: https://bit.ly/3dtJtR7
-        dest: /home/ansible/lab-error-handling/transaction_list
-    - debug: msg="File downloaded"
+      block:
+        - file:
+            path: /home/ansible/lab-error-handling
+            state: directory
+            mode: '0755'
+        - get_url:
+            url: https://bit.ly/3dtJtR7
+            dest: /home/ansible/lab-error-handling/transaction_list
+        - debug: msg="File downloaded"
 ```
 
 
 
 ### Add connection failure logic
 
-We need to reconfigure a bit here, adding a **block** keyword and a **rescue** in case the URL we're reaching out to is down:
+We need to reconfigure a bit here, adding a **block** keyword and a **rescue**, in case the URL we're reaching out to is down:
 
 ```yaml
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - name: download transaction_list
       block:
+        - file:
+            path: /home/ansible/lab-error-handling
+            state: directory
+            mode: '0755'
         - get_url:
             url: https://bit.ly/3dtJtR7
             dest: /home/ansible/lab-error-handling/transaction_list
@@ -61,14 +113,18 @@ We need to reconfigure a bit here, adding a **block** keyword and a **rescue** i
 
 ### Add an always message
 
-An **always** block here will let us know that the playbook at least attempted to download the file:
+An **always** block here will let us know that the playbook at least made an attempt to download the file:
 
 ```yaml
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - name: download transaction_list
       block:
+        - file:
+            path: /home/ansible/lab-error-handling
+            state: directory
+            mode: '0755'
         - get_url:
             url: https://bit.ly/3dtJtR7
             dest: /home/ansible/lab-error-handling/transaction_list
@@ -81,14 +137,18 @@ An **always** block here will let us know that the playbook at least attempted t
 
 ### Replace '#BLANKLINE' with '\n'
 
-We can use the **replace** module for this task and sneak it between the **get_url** and first **debug** tasks.
+We can use the **replace** module for this task, and we'll sneak it in between the **get_url** and first **debug** tasks.
 
 ```yaml
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - name: download transaction_list
       block:
+        - file:
+            path: /home/ansible/lab-error-handling
+            state: directory
+            mode: '0755'
         - get_url:
             url: https://bit.ly/3dtJtR7
             dest: /home/ansible/lab-error-handling/transaction_list
@@ -103,74 +163,62 @@ We can use the **replace** module for this task and sneak it between the **get_u
         - debug: msg="Attempt completed."
 ```
 
+
+
+## Commit and Push Changes to GitHub
+
+1. In the sidebar, click on the “Source Control” icon (it looks like a branch).
+2. Confirm you've saved your changes.
+3. In the “Source Control” pane, review the changes you made to the file.
+4. Under the `ansible-working` repo, enter a commit message describing your changes.
+5. Click the “Commit” button to commit the changes.
+6. Click “yes”, if prompted to stage all files. If you get an error about “user.email” and “user.name” not being set, do the following.
+7. Open PowerShell and type:
+   1. `cd "C:\Program Files\Git\bin"`
+   2. `git config --global user.name "< your name >"`
+   3. `git config --global user.email "< your email address >"`
+8. Click on the “…” menu in the “Source Control” pane, and select “Push” to push the changes to GitHub.
+9. If you are prompted, log into GitHub to authenticate.
+10. Click on the “…” menu in the “Source Control” pane, and select “Push” to push the changes to GitHub.
+
+
+
 ## Run the playbook 
 
-```
-ansible-playbook /home/ansible/lab-error-handling/report.yml
-```
+In Automation Platform, create a new template with the following: 
 
-If all went well, we can read the downloaded text file:
-
-```
-cat /home/ansible/lab-error-handling/transaction_list
-```
-
-
-
-After confirming the playbook successfully downloads and updates the `transaction_list` file, pull the latest changes from the repository, and run the `break_stuff.yml` playbook in the `maint` directory to simulate an unreachable host. 
-
-```
-cd ~/tf-dev && git pull
-```
-
-Add the `ansible` user to the `sudoers` file. 
-
-Exit to the `ec2-user` account
-```
-exit
-```
-
-As `ec2-user` run `visudo`   
-
-```
-sudo visudo
-```
-
-Add the following: 
-```
-ansible    ALL=(ALL)       NOPASSWD: ALL
-```
-
-Change back to the `ansible` user. 
-
-```
-sudo su - ansible
-```
-
-```sh
-ansible-playbook ~/tf-dev/labs/error-handling/maint/break_stuff.yml --tags service_down
-```
-
-Confirm the host is no longer reachable 
-```sh
-curl -L -o transaction_list https://bit.ly/3dtJtR7
-```
-
-Run the playbook again and confirm it gracefully handles the failure.
+* Name: **error_handling**
+* Inventory: **First Inventory**
+* Project: **ansible-working**
+* Execution Environment: **Default execution environment**
+* Playbook: **report.yml**
+* Credentials: **Linux credentials**
 
 
 
-Restore the service using `break_stuff.yml`, and confirm the `report.yml` playbook reports the service is back online.
+Run the `error_handling` job.
 
-```
-ansible-playbook ~/tf-dev/labs/error-handling/maint/break_stuff.yml --tags service_up
-```
-
-```
-ansible-playbook /home/ansible/lab-error-handling/report.yml
-```
+You can confirm it ran successfully by reviewing the job output. 
 
 
+
+### Simulate a failure 
+
+Now, let's simulate a down service by running the `service_down` job. 
+
+
+
+After it completes, run the `error_handling` job again and you'll see the output shows that the connection failed. 
+
+
+
+Finally, run the `service_up` job, and then rerun the `error_handling` job. 
+
+
+
+### Bonus 
+
+Use ad-hoc to confirm the `/home/ansible/lab-error-handling/transaction_list` file was created and is formatted correctly. 
 
 ## Congrats!
 
