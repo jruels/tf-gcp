@@ -31,4 +31,5 @@ Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)
 Lab 15: [Ansible handling](labs/error-handling)  
 
 ### Day 4
-[Download Go Files](go_foundation_files.zip)
+[Download Go Files](go_foundation_files.zip)  
+[Go Slides](go_slides.pdf)  
