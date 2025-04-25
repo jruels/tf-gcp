@@ -36,4 +36,4 @@ Lab 15: [Ansible handling](labs/error-handling)
 
 
 ### Day 5 
-[Terraform custom proviers](labs/tf-custom-providers)
+[Terraform custom providers](https://github.com/jruels/tf-dev/tree/main/labs/tf-custom-providers)
