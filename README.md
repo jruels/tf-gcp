@@ -33,3 +33,7 @@ Lab 15: [Ansible handling](labs/error-handling)
 ### Day 4
 [Download Go Files](go_foundation_files.zip)  
 [Go Slides](go_slides.pdf)  
+
+
+### Day 5 
+[Terraform custom proviers](labs/tf-custom-providers)
