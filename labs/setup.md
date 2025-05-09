@@ -6,7 +6,7 @@
 
 1. Open Visual Studio Code
 2. In Visual Studio Code, click **File** -> **Open Folder** and browse to `C:\Users\TEKstudent\Downloads\repos\tf-dev`
-3. After opening the folder, click the third icon in the left toolbar for source control. Next to the open repository, click the three dots and choose **pull**.
+3. After opening the folder, click the third icon in the left toolbar for source control. Next to **changes**, click the three dots and choose **pull**.
 
 # Configure AWS credentials
 
@@ -16,7 +16,7 @@
     * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
 2. Search for IAM in the search bar.
 3. Click **IAM**
-4. Click **Users**.
+4.Click **Users**.
 5. Click **autodev-admin**.
 6. Click **Security Credentials**.
 7. Scroll down to **Access Keys**
