@@ -11,20 +11,20 @@ These instructions assume that you are using Visual Studio Code.
 ### Create a Working Directory
 
 1. Open **Visual Studio Code**.
-2. Click on **File** > **Open Folder...** and create a new folder in your Documents folder named with today's date (e.g., 20240329).
-3. Inside the opened folder, right-click in the **Explorer** pane and choose **New Folder**.
-4. Name the new folder `terraform` and double-click to enter it.
+2. Click on **File** > **Open Folder...** and create a new folder in your Documents folder named with today's date (e.g., 20240329), and enter it.
+3. Inside the opened folder (e.g. 20240329), click the **New Folder** icon.
+4. Name the new folder `terraform` and double-click it to open it in Visual Studio Code.
 
 ## Create Terraform Configuration
 
 ### Create the Lab Directory
 
-1. Right-click inside the **Explorer** pane again and select **New Folder**.
-2. Name this folder `tf-lab1` and enter it.
+1. In Visual Studio Code, click the new folder icon or Right-click inside the **Explorer** pane and select **New Folder**.
+2. Name this folder `tf-lab1` and expand it.
 
 ### Create the `main.tf` File
 
-1. Right-click inside `tf-lab1`, select **New File**, and name it `main.tf`.
+1. Right-click the `tf-lab1` folder, select **New File**, and name it `main.tf`.
 2. Open `main.tf` and paste the following Terraform configuration:
 
 ```hcl
