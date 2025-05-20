@@ -25,20 +25,25 @@ Inside the Windows VM complete the following steps.
 #### Open the newly created repository in VS Code
 
 1. Launch a new VS Code Window.
-2. Select the Source Control Tab from the toolbar on the left
-3. In the top of the VS Code window click the search bar.
-4. Type: `> clone` and choose `Git: Clone`
-5. Paste the URL to newly created Repo
-6. In the choose a folder dialog, select your `repos` folder.
-7. Click the `select as Repository Destination` button
-8. In the Visual Studio Code dialog click the `Add to Workspace` button to open the repository in VS Code
-9. In the left Toolbar click the Explorer button.
+   1. **File** -> **New Window**
+
+2. In the top of the VS Code window click the search bar.
+3. Type: `> clone` and choose `Git: Clone`
+4. Click **Clone from GitHub** 
+   1. Sign in to your GitHub account.
+   2. Select the newly created repository.
+
+5. In the choose a folder dialog, on the left side menu, select your `repos` folder.
+6. Click the `select as Repository Destination` button.
+   1. In the pop-up window click **Open**
+
+7. In the left Toolbar, click the Explorer button, and you will see a `README.md` file.
 
 
 
 #### Red Hat Developer account
 
-Go to the [Red Hat Developer portal](https://developers.redhat.com/about), click "Join now," and fill out the form. 
+Go to the [Red Hat Developer portal](https://developers.redhat.com/about), click **Join here at no cost**, and fill out the form. 
 
 Provide the following: 
 
@@ -46,6 +51,8 @@ Provide the following:
 * Email address 
 * Job role 
 * Password 
+
+If asked for additional information, complete that too. 
 
 
 
@@ -112,9 +119,9 @@ The latest version of AAP does not support installation on `localhost`. Due to t
 
 
 
-We can't use VS Code for this because we must edit the file with elevated privileges in the terminal.
+We must use the VS Code terminal because we neede with elevated privileges. to edit the fil
 
-Using `sudo` open `/etc/hosts` in your favorite editor. 
+Using `sudo` open `/etc/hosts` in a command-line editor.  
 
 ```
 sudo vi /etc/hosts
