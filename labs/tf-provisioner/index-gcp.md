@@ -32,11 +32,24 @@ The IP addresses in GCP are accessed differently from AWS:
 - External IP: `network_interface[0].access_config[0].nat_ip`
 - Internal IP: `network_interface[0].network_ip`
 
+## Apply and Check Results
+
+Run terraform apply to create the instance and trigger the provisioners:
+```bash
+terraform apply -auto-approve
+```
+
+Once complete, you can view the IP addresses that were captured:
+```bash
+cat external_ips.txt  # View external (public) IP
+cat internal_ips.txt  # View internal (private) IP
+```
+
 ## Cleanup
 
 Run the following to clean up the resources
 
-```
+```bash
 terraform destroy -auto-approve
 ```
 
