@@ -19,7 +19,7 @@ Now use modules to create an example GCP environment using a Virtual Private Clo
 
 1. In **Visual Studio Code**, open the working directory, `terraform`.
 2. Right-click in the **Explorer** pane and select **New Folder**.
-3. Name the folder `tf-lab8`.
+3. Name the folder `tf-lab5`.
 
 Create a new file called `main.tf` with the following content:
 
@@ -58,27 +58,6 @@ module "vpc" {
     subnet-01 = []
   }
 }
-
-module "compute_instances" {
-  source  = "terraform-google-modules/vm/google"
-  version = "~> 8.0"
-  
-  project_id  = var.project_id
-  region      = var.region
-  zone        = var.zone
-  
-  num_instances = 2
-  hostname      = "tf-instance"
-  
-  machine_type = "e2-micro"
-  
-  subnetwork = module.vpc.subnets_names[0]
-  
-  service_account = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
-}
 ```
 
 ## Set values for module input variables
@@ -94,12 +73,6 @@ Review the input variables you are setting within the module `vpc` block:
 - `routing_mode` defines the network-wide routing mode
 - `subnets` defines the subnets within your VPC network
 - `secondary_ranges` defines secondary IP ranges for your subnets (empty in this example)
-
-For the `compute_instances` module:
-- `num_instances` defines how many instances to create
-- `machine_type` specifies the VM instance type
-- `subnetwork` references the subnet created by the VPC module
-- `service_account` configures the service account for the instances
 
 ## Define root input variables
 Create the following in `variables.tf`:
@@ -147,11 +120,6 @@ output "network_name" {
 output "subnets_names" {
   description = "The names of the subnets being created"
   value       = module.vpc.subnets_names
-}
-
-output "instance_ips" {
-  description = "Internal IP addresses of the instances"
-  value       = module.compute_instances.instances_details[*].network_interface[0].network_ip
 }
 ```
 
