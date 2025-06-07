@@ -45,19 +45,21 @@ A likely place to use list variables is when setting the `secondary_ip_ranges` f
 Add the following variable declaration to `variables.tf`.
 
 ```hcl
-
-variable "secondary_ip_ranges" {
+variable "private_subnet_0_secondary_ranges" {
   description = "Available CIDR blocks for secondary IP ranges."
   type        = list(string)
   default     = [
-    "10.0.101.0/24",
-    "10.0.102.0/24",
-    "10.0.103.0/24",
-    "10.0.104.0/24",
-    "10.0.105.0/24",
-    "10.0.106.0/24",
-    "10.0.107.0/24",
-    "10.0.108.0/24",
+    "192.168.10.0/24",
+    "192.168.20.0/24"
+  ]
+}
+
+variable "private_subnet_1_secondary_ranges" {
+  description = "Available CIDR blocks for secondary IP ranges."
+  type        = list(string)
+  default     = [
+    "192.168.30.0/24",
+    "192.168.40.0/24"
   ]
 }
 ```
@@ -88,44 +90,37 @@ Now inspect the list of secondary IP ranges in the Terraform console.
 Refer to the variable by name to return the entire list.
 
 ```sh
-var.secondary_ip_ranges
+var.private_subnet_0_secondary_ranges
 ```
 
 output: 
 ```sh
 tolist([
-  "10.0.101.0/24",
-  "10.0.102.0/24",
-  "10.0.103.0/24",
-  "10.0.104.0/24",
-  "10.0.105.0/24",
-  "10.0.106.0/24",
-  "10.0.107.0/24",
-  "10.0.108.0/24",
+  "192.168.10.0/24",
+  "192.168.20.0/24",
 ])
 ```
 
 Now use the following to retrieve the second element from the list: 
 ```sh
-var.secondary_ip_ranges[1]
+var.private_subnet_0_secondary_ranges[1]
 ```
 
 output: 
 ```sh
-"10.0.102.0/24"
+"192.168.20.0/24"
 ```
 
 Now use the `slice()` function to return the first three elements from the list.
 ```sh
-slice(var.secondary_ip_ranges, 0, 3)
+slice(var.private_subnet_0_secondary_ranges, 0, 3)
 ```
 
 output:
 ```sh
 tolist([
-  "10.0.101.0/24",
-  "10.0.102.0/24",
-  "10.0.103.0/24",
+  "192.168.10.0/24",
+  "192.168.20.0/24",
 ])
 ```
 
@@ -149,7 +144,7 @@ resource "google_compute_subnetwork" "subnet" {
 
   secondary_ip_range {
 +    range_name    = "secondary-range-${count.index}"
-+    ip_cidr_range = slice(var.secondary_ip_ranges, count.index * var.secondary_ip_range_count, 
++    ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, count.index * var.secondary_ip_range_count, 
 +                         (count.index + 1) * var.secondary_ip_range_count)[0]
   }
 }
