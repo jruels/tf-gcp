@@ -50,7 +50,8 @@ variable "private_subnet_0_secondary_ranges" {
   type        = list(string)
   default     = [
     "192.168.10.0/24",
-    "192.168.20.0/24"
+    "192.168.20.0/24",
+    "192.168.30.0/24"
   ]
 }
 
@@ -58,8 +59,9 @@ variable "private_subnet_1_secondary_ranges" {
   description = "Available CIDR blocks for secondary IP ranges."
   type        = list(string)
   default     = [
-    "192.168.30.0/24",
-    "192.168.40.0/24"
+    "192.168.40.0/24",
+    "192.168.50.0/24",
+    "192.168.60.0/24"
   ]
 }
 ```
@@ -98,6 +100,7 @@ output:
 tolist([
   "192.168.10.0/24",
   "192.168.20.0/24",
+  "192.168.30.0/24"
 ])
 ```
 
@@ -111,16 +114,16 @@ output:
 "192.168.20.0/24"
 ```
 
-Now use the `slice()` function to return the first three elements from the list.
+Now use the `slice()` function to return the first two elements from the list.
 ```sh
-slice(var.private_subnet_0_secondary_ranges, 0, 3)
+slice(var.private_subnet_0_secondary_ranges, 0, 2)
 ```
 
 output:
 ```sh
 tolist([
   "192.168.10.0/24",
-  "192.168.20.0/24",
+  "192.168.20.0/24"
 ])
 ```
 
@@ -135,22 +138,54 @@ In the `main.tf` use the slice function to extract a subnet of the CIDR block li
 Remove lines with `-` and add lines with `+`
 
 ```hcl
-resource "google_compute_subnetwork" "subnet" {
-  count         = var.subnet_count
-  name          = "subnet-${count.index}"
-  network       = google_compute_network.vpc.id
-  region        = var.gcp_region
-  ip_cidr_range = var.subnet_cidr_blocks[count.index]
+module "vpc" {
+  source  = "terraform-google-modules/network/google"
+  version = "~> 7.0"
 
-  secondary_ip_range {
-+    range_name    = "secondary-range-${count.index}"
-+    ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, count.index * var.secondary_ip_range_count, 
-+                         (count.index + 1) * var.secondary_ip_range_count)[0]
-  }
+  project_id   = var.project_id
+  network_name = "${var.project_name}-${var.environment}"
+  routing_mode = "GLOBAL"
+
+  subnets = [
+    {
+      subnet_name   = "private-subnet-0"
+      subnet_ip     = var.private_subnet_cidr_blocks[0]
+      subnet_region = var.region
+      secondary_ip_ranges = [
+        {
+          range_name    = "secondary-range-0"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[0]
+        },
+        {
+          range_name    = "secondary-range-1"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[1]
+        },
+        {
+          range_name    = "secondary-range-2"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[2]
+        }
+      ]
+    },
+    {
+      subnet_name   = "private-subnet-1"
+      subnet_ip     = var.private_subnet_cidr_blocks[1]
+      subnet_region = var.region
+      secondary_ip_ranges = [
+        {
+          range_name    = "subnet-1-secondary-0"
+          ip_cidr_range = var.private_subnet_1_secondary_ranges[0]
+        },
+        {
+          range_name    = "subnet-1-secondary-1"
+          ip_cidr_range = var.private_subnet_1_secondary_ranges[1]
+        }
+      ]
+    }
+  ]
 }
 ```
 
-This way, users of this configuration can specify the number of subnets and secondary IP ranges they want without worrying about defining CIDR blocks.
+This way, users of this configuration can specify the number of subnets and secondary IP ranges they want without worrying about defining CIDR blocks. The slice function is used to extract the appropriate ranges from the list of available CIDR blocks.
 
 ## Map resource labels
 
