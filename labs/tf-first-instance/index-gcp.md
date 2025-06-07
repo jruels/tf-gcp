@@ -4,6 +4,13 @@
 
 This lab walks through setting up Terraform and creating your first resources.
 
+## Authentication
+Before proceeding, authenticate with Google Cloud:
+
+```sh
+gcloud auth application-default login
+```
+
 ## Setup
 
 These instructions assume that you are using Visual Studio Code.
@@ -60,12 +67,12 @@ resource "google_compute_instance" "lab1-tf-example" {
   }
 
   labels = {
-    name = "Lab1-TF-example"
+    name = "lab1-tf-example"
   }
 }
 ```
 
-This configuration is ready to be applied. We'll review each section in detail below.
+Replace 'YOUR_PROJECT_ID' with your actual project ID, once done this configuration is ready to be applied. We'll review each section in detail below.
 
 ## Providers
 

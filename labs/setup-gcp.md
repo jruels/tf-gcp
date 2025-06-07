@@ -62,5 +62,4 @@ edit_file "setup-gcp.md" {
 
 ## Congratulations
 
-Congratulations, you've successfully configured your machine."""
-}
+Congratulations, you've successfully configured your machine.
