@@ -14,8 +14,6 @@ Create three Compute Engine instances in the Google Cloud Console.
    - Name: Leave as default (will be changed later)
    - Region/Zone: Select your preferred region (e.g., us-central1-a)
    - Machine configuration: Select "E2" series and "e2-micro"
-   - Boot disk: Select "Debian" as the operating system
-   - Click "Add label" and set Key to `role` and Value to `terraform`
    - Leave other settings as default
 
 4. Click "Create" and repeat this process two more times for a total of 3 instances.
@@ -50,13 +48,40 @@ While waiting for the instances to launch, create a new working directory and co
 Remember, this resource block is for three instances. You will need to add the `count.index` to the instance name and labels. If you get stuck, ask the instructor for assistance.
 
 ## Import the configuration 
-Now that you've created the instances and the Terraform configuration, use the `terraform import` command to import the existing instances. 
+Now that you've created the instances and the Terraform configuration, first initialize Terraform:
+
+```bash
+terraform init
+```
+
+Then use the `terraform import` command to import the existing instances. 
 
 The import command format for GCP Compute Engine instances is:
 ```
-terraform import 'google_compute_instance.tf-example-import[0]' projects/PROJECT_ID/zones/ZONE/instances/INSTANCE_NAME
+terraform import 'google_compute_instance.tf-example-import[0]' PROJECT_ID/ZONE/INSTANCE_NAME
 ```
 
 You'll need to run this command for each instance, incrementing the index [0], [1], [2] and using the corresponding instance names from the console.
 
-If you get stuck, check the help page `terraform import --help` or the [Terraform GCP Provider documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance#import). 
+If you get stuck, check the help page `terraform import --help` or the [Terraform GCP Provider documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance#import).
+
+## Apply Changes
+
+After importing, if you run:
+```bash
+terraform apply
+```
+
+Note that this will rename your instances to match the names in your Terraform configuration (tf-example-import-0, tf-example-import-1, tf-example-import-2). This is because the configuration specifies these names, and Terraform will modify the instances to match the configuration.
+
+## Cleanup
+
+To remove all resources:
+```bash
+terraform destroy
+```
+
+This will delete all three instances that were imported.
+
+# Congrats
+
