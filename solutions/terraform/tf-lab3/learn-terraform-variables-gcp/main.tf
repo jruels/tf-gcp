@@ -31,12 +31,16 @@ module "vpc" {
       subnet_region = var.region
       secondary_ip_ranges = [
         {
-          range_name    = "subnet-0-secondary-0"
-          ip_cidr_range = var.private_subnet_0_secondary_ranges[0]
+          range_name    = "secondary-range-0"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[0]
         },
         {
-          range_name    = "subnet-0-secondary-1"
-          ip_cidr_range = var.private_subnet_0_secondary_ranges[1]
+          range_name    = "secondary-range-1"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[1]
+        },
+        {
+          range_name    = "secondary-range-2"
+          ip_cidr_range = slice(var.private_subnet_0_secondary_ranges, 0, 3)[2]
         }
       ]
     },

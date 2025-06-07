@@ -107,7 +107,8 @@ variable "private_subnet_0_secondary_ranges" {
   type        = list(string)
   default     = [
     "192.168.10.0/24",
-    "192.168.20.0/24"
+    "192.168.20.0/24",
+    "192.168.30.0/24"
   ]
 }
 
@@ -115,7 +116,14 @@ variable "private_subnet_1_secondary_ranges" {
   description = "Secondary IP CIDR ranges for private subnet 1"
   type        = list(string)
   default     = [
-    "192.168.30.0/24",
-    "192.168.40.0/24"
+    "192.168.40.0/24",
+    "192.168.50.0/24",
+    "192.168.60.0/24"
   ]
+}
+
+variable "secondary_ip_range_count" {
+  description = "Number of secondary IP ranges per subnet"
+  type        = number
+  default     = 3
 }
