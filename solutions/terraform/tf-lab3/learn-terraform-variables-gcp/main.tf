@@ -120,10 +120,7 @@ module "instances" {
   network       = module.vpc.network_name
   subnetwork    = module.vpc.subnets["${var.region}/private-subnet-0"].name
   network_tags   = var.network_tags
-  labels        = {
-    project     = var.project_name
-    environment = var.environment
-  }
+  labels        = var.resource_labels
 }
 
 # Create an unmanaged instance group for the load balancer
@@ -139,6 +136,7 @@ resource "google_compute_instance_group" "webservers" {
     name = "http"
     port = 80
   }
+
 }
 
 # Update the load balancer to use the unmanaged instance group
@@ -151,6 +149,8 @@ module "lb" {
   target_tags       = var.network_tags
   firewall_networks = [module.vpc.network_name]
   create_ipv6_address = var.create_ipv6_address
+
+  labels = var.resource_labels
 
   backends = {
     default = {

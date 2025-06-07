@@ -237,30 +237,6 @@ Apply these changes.
 
 The value of `project` label has changed, so you will be prompted to apply the changes. Respond with `yes` to confirm the changes.
 
-## Assign values when prompted
-In the examples, so far, all of the variable have had a default declared. If there is no default Terraform will prompt you at run time for the value. 
-
-Add the following to `variables.tf`
-```hcl
-variable "machine_type" {
-  description = "GCP machine type."
-  type        = string
-}
-```
-
-Replace the reference to the machine type in `main.tf`
-Remove lines with `-` and add lines with `+`
-
-```hcl
-resource "google_compute_instance" "vm_instance" {
-  count        = var.instance_count
-  name         = "instance-${count.index}"
-+  machine_type = var.machine_type
-# ...
-```
-
-Apply this configuration now and provide `e2-micro` as the value for the requested variable.
-
 ## Cleanup
 Run `terraform destroy` to remove resources.
 
