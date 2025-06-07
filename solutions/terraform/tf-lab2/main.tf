@@ -32,4 +32,12 @@ resource "google_compute_instance" "lab2-tf-example" {
   labels = {
     name = var.instance_name
   }
+
+  provisioner "local-exec" {
+    command = "echo ${self.network_interface[0].access_config[0].nat_ip} >> external_ips.txt"
+  }
+
+  provisioner "local-exec" {
+    command = "echo ${self.network_interface[0].network_ip} >> internal_ips.txt"
+  }
 }
