@@ -9,14 +9,7 @@ variable "region" {
   default     = "us-central1"
 }
 
-variable "prod_prefix" {
-  description = "Prefix for production resources"
+variable "environment" {
+  description = "Environment (dev or prod)"
   type        = string
-  default     = "prod"
-}
-
-variable "dev_prefix" {
-  description = "Prefix for development resources"
-  type        = string
-  default     = "dev"
 }
