@@ -53,12 +53,6 @@ resource "google_storage_bucket" "prod" {
   }
 }
 
-resource "google_storage_bucket_iam_member" "prod" {
-  bucket = google_storage_bucket.prod.name
-  role   = "roles/storage.objectViewer"
-  member = "allUsers"
-}
-
 resource "google_storage_bucket_object" "prod" {
   name          = "index.html"
   bucket        = google_storage_bucket.prod.name
@@ -78,12 +72,6 @@ resource "google_storage_bucket" "dev" {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"
   }
-}
-
-resource "google_storage_bucket_iam_member" "dev" {
-  bucket = google_storage_bucket.dev.name
-  role   = "roles/storage.objectViewer"
-  member = "allUsers"
 }
 
 resource "google_storage_bucket_object" "dev" {
@@ -167,6 +155,11 @@ terraform apply
 
 Navigate to the web addresses from the Terraform output to display the deployments in a browser.
 
+Clean up the monolithic resources before refactoring:
+```bash
+terraform destroy -auto-approve
+```
+
 ## Refactor the configuration
 
 Having duplicate resources for each environment creates maintenance overhead and potential inconsistencies. Let's refactor to use a single set of resources with environment-specific variables.
@@ -189,11 +182,6 @@ variable "environment" {
   description = "Environment (dev or prod)"
   type        = string
 }
-
-variable "environment_prefix" {
-  description = "Prefix for resource names"
-  type        = string
-}
 ```
 
 2. Create environment-specific variable files:
@@ -203,7 +191,6 @@ variable "environment_prefix" {
 project_id         = "YOUR_PROJECT_ID"
 region            = "us-central1"
 environment       = "dev"
-environment_prefix = "dev"
 ```
 
 `prod.tfvars`:
@@ -211,7 +198,6 @@ environment_prefix = "dev"
 project_id         = "YOUR_PROJECT_ID"
 region            = "us-central1"
 environment       = "prod"
-environment_prefix = "prod"
 ```
 
 3. Update `main.tf` to use a single set of resources:
@@ -241,7 +227,7 @@ resource "random_pet" "petname" {
 }
 
 resource "google_storage_bucket" "website" {
-  name          = "${var.environment_prefix}-${random_pet.petname.id}"
+  name          = "${var.environment}-${random_pet.petname.id}"
   location      = var.region
   force_destroy = true
 
@@ -282,21 +268,37 @@ output "website_url" {
 
 ## Deploy the environments
 
-Deploy to development:
+First, let's look at what would be created in each environment:
+
 ```bash
-terraform init
-terraform apply -var-file="dev.tfvars"
+terraform plan -var-file="dev.tfvars"
 ```
 
-After testing, destroy the dev environment:
+Notice how the bucket will be created with the `environment = "dev"` label.
+
+Now check the production plan:
 ```bash
-terraform destroy -var-file="dev.tfvars"
+terraform plan -var-file="prod.tfvars"
 ```
 
-Deploy to production:
-```bash
-terraform apply -var-file="prod.tfvars"
-```
+Notice the difference in the bucket's label where `environment = "prod"`.
+
+
+
+## Important Note About State Management
+
+While using different tfvars files makes the code more maintainable, it introduces challenges when running Terraform locally:
+
+1. You need to remember to destroy one environment before creating another (since they share the same state file)
+2. There's risk of accidentally applying the wrong tfvars file
+3. Multiple team members could try to manage different environments simultaneously
+
+This is why in real-world scenarios, you should:
+1. Run Terraform through CI/CD pipelines
+2. Use separate state files for each environment
+3. Implement proper state locking
+
+These topics will be covered in the next lab on CI/CD integration.
 
 ## Cleanup
 

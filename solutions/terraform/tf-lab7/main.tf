@@ -21,9 +21,8 @@ resource "random_pet" "petname" {
   separator = "-"
 }
 
-# Production bucket
-resource "google_storage_bucket" "prod" {
-  name          = "${var.prod_prefix}-${random_pet.petname.id}"
+resource "google_storage_bucket" "website" {
+  name          = "${var.environment}-${random_pet.petname.id}"
   location      = var.region
   force_destroy = true
 
@@ -33,44 +32,21 @@ resource "google_storage_bucket" "prod" {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"
   }
-}
 
-resource "google_storage_bucket_iam_member" "prod" {
-  bucket = google_storage_bucket.prod.name
-  role   = "roles/storage.objectViewer"
-  member = "allUsers"
-}
-
-resource "google_storage_bucket_object" "prod" {
-  name          = "index.html"
-  bucket        = google_storage_bucket.prod.name
-  content       = file("${path.module}/assets/index.html")
-  content_type  = "text/html"
-}
-
-# Development bucket
-resource "google_storage_bucket" "dev" {
-  name          = "${var.dev_prefix}-${random_pet.petname.id}"
-  location      = var.region
-  force_destroy = true
-
-  uniform_bucket_level_access = true
-
-  website {
-    main_page_suffix = "index.html"
-    not_found_page   = "404.html"
+  labels = {
+    environment = var.environment
   }
 }
 
-resource "google_storage_bucket_iam_member" "dev" {
-  bucket = google_storage_bucket.dev.name
+resource "google_storage_bucket_iam_member" "website" {
+  bucket = google_storage_bucket.website.name
   role   = "roles/storage.objectViewer"
   member = "allUsers"
 }
 
-resource "google_storage_bucket_object" "dev" {
+resource "google_storage_bucket_object" "website" {
   name          = "index.html"
-  bucket        = google_storage_bucket.dev.name
+  bucket        = google_storage_bucket.website.name
   content       = file("${path.module}/assets/index.html")
   content_type  = "text/html"
 }
