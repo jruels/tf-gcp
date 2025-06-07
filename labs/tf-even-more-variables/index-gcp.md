@@ -5,17 +5,28 @@ Terraform supports several variable types, including bool, string, and numbers.
 
 The following steps continue where the previous lab left off. The changes below should be applied to the `tf-lab3` directory.
 
-## Cloud NAT support
+## IPv6 Support
 
-Use a `bool` type variable to control whether your VPC is configured with Cloud NAT. Add a declaration for the `enable_cloud_nat` to `variables.tf`
-- variable name: `enable_cloud_nat`
-- description: `Enable Cloud NAT in your VPC network.`
-- type: `bool`
-- default: `false`
+Use a bool type variable to control whether your load balancer automatically gets an IPv6 address. Add a declaration for create_ipv6_address to variables.tf:
 
-Add the new variable in `main.tf` and replace the existing `enable_cloud_nat = false` with the variable.
+- variable name: create_ipv6_address
+- description: Allocate a new IPv6 address for the load balancer. Conflicts with manually specified ipv6_address.
+- type: bool
+- default: false
 
-Leave the value for `enable_private_ip_google_access` hard-coded. In any configuration, there may be some values that you want to allow users to configure with variables and others you don't.
+Find the load balancer module block in main.tf (module "lb") and add create_ipv6_address = var.create_ipv6_address to its configuration. This setting should be at the same level as the project, name, and target_tags arguments.
+
+Leave the ipv6_address setting as undefined. This allows users to either let GCP automatically allocate an address (using create_ipv6_address) or specify one manually (using ipv6_address) if needed.
+
+Try applying with IPv6 enabled:
+```bash
+terraform apply -var="create_ipv6_address=true"
+```
+
+Then try with IPv6 disabled:
+```bash
+terraform apply -var="create_ipv6_address=false"
+```
 
 When you write Terraform modules you intend to re-use, you will usually want to make as many attributes configurable with variables as possible, to make your module more flexible for use in more situations.
 
