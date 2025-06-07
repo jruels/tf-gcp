@@ -53,15 +53,24 @@ resource "google_compute_instance" "lab2-tf-example" {
 
 1. Open **Integrated Terminal** in `tf-lab2`.
 
-2. Run the following command:
+2. Initialize Terraform:
+   ```sh
+   terraform init
+   ```
 
+3. Create an execution plan:
+   ```sh
+   terraform plan
+   ```
+
+4. Apply the configuration:
    ```sh
    terraform apply
    ```
 
-3. If everything looks correct, type `yes` to confirm and apply the configuration.
+5. If everything looks correct, type `yes` to confirm and apply the configuration.
 
-4. Apply the configuration again, passing the variable via the command line:
+6. Apply the configuration again, passing the variable via the command line:
 
    ```sh
    terraform apply -var 'instance_name=SomeOtherName'
