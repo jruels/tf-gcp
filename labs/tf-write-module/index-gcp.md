@@ -36,13 +36,13 @@ You also want to make sure and add the following to your ignore list. If you are
 
 1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
 2. Right-click in the **Explorer** pane and select **New Folder**.
-3. Name the folder `tf-lab5`.
-4. Create a sub-folder called `modules` inside `tf-lab5`.
+3. Name the folder `tf-lab6`.
+4. Create a sub-folder called `modules` inside `tf-lab6`.
 5. Inside `modules`, create a sub-folder named `gcp-storage-static-website-bucket`.
 
 After creating these directories, your configuration's directory structure will look like this:
 ```
-tf-lab5
+tf-lab6
 ├── LICENSE
 ├── README.md
 ├── main.tf
@@ -249,28 +249,6 @@ terraform apply
 ```
 
 After the configuration is applied, you'll see the outputs including the website URL, bucket name, and bucket self link.
-
-## Testing the static website
-
-1. Create a simple `index.html` file:
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Static Website</title>
-</head>
-<body>
-    <h1>Welcome to my website!</h1>
-</body>
-</html>
-```
-
-2. Upload it to your bucket:
-```sh
-gsutil cp index.html gs://<YOUR-BUCKET-NAME>/
-```
-
-3. Visit the website URL shown in the Terraform outputs to see your static website.
 
 ## Cleanup
 
