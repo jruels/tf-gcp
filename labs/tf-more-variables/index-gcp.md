@@ -23,6 +23,15 @@ Enter the directory:
 cd learn-terraform-variables-gcp
 ```
 
+Before proceeding, open `variables.tf` and update the `project_id` variable with your GCP project ID:
+```hcl
+variable "project_id" {
+  description = "The ID of the GCP project"
+  type        = string
+  default     = "YOUR-PROJECT-ID"    # Replace with your project ID
+}
+```
+
 The configuration in `main.tf` defines a web application, including a VPC network, load balancer, and Compute Engine instances.
 
 Review the configuration files, and pay attention to the resources being created and their hard-coded values.
@@ -45,13 +54,13 @@ You can define variables anywhere in your configuration files, but the recommend
 
 To parameterize an argument with an input variable, you will first define the variable in `variables.tf`, then replace the hard-coded value with a reference to that variable in your configuration.
 
-Add a block declaring the `gcp_region` variable to `variables.tf`
+Add a block declaring the `machine_type` variable to `variables.tf`
 
 ```hcl
-variable "gcp_region" {
-  description = "GCP region"
+variable "machine_type" {
+  description = "GCP machine type"
   type        = string
-  default     = "us-west1"
+  default     = "e2-micro"
 }
 ```
 
@@ -72,15 +81,15 @@ The rest of this lab uses principles taught previously, and will not provide ste
 
 You can refer to variables in your configuration with `var.<variable_name>`.
 
-Edit the provider block in `main.tf` to use the new `gcp_region` variable.
+Edit the instances module in `main.tf` to use the new `machine_type` variable.
 
-Add a declaration for the `vpc_cidr_block` variable to `variables.tf` with the following: 
-- variable name: `vpc_cidr_range`
-- description: `CIDR range for VPC`
-- type: `string`
-- default: `"10.0.0.0/16"`
+Add a declaration for the `network_tags` variable to `variables.tf` with the following:
+- variable name: `network_tags`
+- description: `Network tags to apply to instances`
+- type: `list(string)`
+- default: `["web-server", "allow-health-check"]`
 
-Now, replace the hard-coded value for the VPC's CIDR range with a variable in `main.tf`.
+Now, update the instances module in `main.tf` to use this variable for the network_tags parameter.
 
 Apply the updated configuration. The default values of these variables are the same as the hard-coded values they replaced so no changes will be made.
 
@@ -94,6 +103,11 @@ Add a variable block to `variables.tf` with the following:
 - default: `2`
 
 Update the Compute Engine instances resource to use the `instance_count` variable in `main.tf`
+
+Set the value for `instance_count`:
+```sh
+export TF_VAR_instance_count=3
+```
 
 Terraform will convert the values into the correct type. The `instance_count` variable would also work using a string ( "2" ) instead of number ( 2 ). 
 
