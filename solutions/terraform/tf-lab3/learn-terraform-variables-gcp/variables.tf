@@ -122,8 +122,11 @@ variable "private_subnet_1_secondary_ranges" {
   ]
 }
 
-variable "secondary_ip_range_count" {
-  description = "Number of secondary IP ranges per subnet"
-  type        = number
-  default     = 3
+variable "resource_labels" {
+  description = "Labels to set for all resources"
+  type        = map(string)
+  default     = {
+    project     = "project-alpha"
+    environment = "dev"
+  }
 }
