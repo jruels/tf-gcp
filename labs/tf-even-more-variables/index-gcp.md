@@ -42,35 +42,9 @@ The following lab will use lists and a map, which are the most commonly used of 
 
 A likely place to use list variables is when setting the `secondary_ip_ranges` for subnets. Make this configuration easier to use while still being customizable by using lists along with the `slice()` function.
 
-Add the following variable declarations to `variables.tf`.
+Add the following variable declaration to `variables.tf`.
 
 ```hcl
-variable "subnet_count" {
-  description = "Number of subnets."
-  type        = number
-  default     = 2
-}
-
-variable "secondary_ip_range_count" {
-  description = "Number of secondary IP ranges per subnet."
-  type        = number
-  default     = 2
-}
-
-variable "subnet_cidr_blocks" {
-  description = "Available CIDR blocks for subnets."
-  type        = list(string)
-  default     = [
-    "10.0.1.0/24",
-    "10.0.2.0/24",
-    "10.0.3.0/24",
-    "10.0.4.0/24",
-    "10.0.5.0/24",
-    "10.0.6.0/24",
-    "10.0.7.0/24",
-    "10.0.8.0/24",
-  ]
-}
 
 variable "secondary_ip_ranges" {
   description = "Available CIDR blocks for secondary IP ranges."
