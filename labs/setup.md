@@ -10,20 +10,21 @@
 
 ### **Step 1: Set up GCP Service Account**
 
-1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the credentials in the spreadsheet below.
+1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the shared credentials in the spreadsheet below.
     * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
-2. Search for "IAM & Admin" in the search bar.
-3. Click **Service Accounts**
-4. Click **CREATE SERVICE ACCOUNT**
-5. Name it "terraform-admin"
-6. Click **CREATE AND CONTINUE**
-7. Assign the "Editor" role
-8. Click **DONE**
-9. Click on the service account you just created
-10. Click **KEYS** tab
-11. Click **ADD KEY** -> **Create new key**
-12. Choose **JSON** format
-13. **IMPORTANT:** The key file will automatically download. Keep this file secure.
+2. Select your assigned project from the project dropdown at the top of the page
+3. Search for "IAM & Admin" in the search bar.
+4. Click **Service Accounts**
+5. Click **CREATE SERVICE ACCOUNT**
+6. Name it "terraform-admin-[YOUR-INITIALS]" (e.g., terraform-admin-jd for John Doe)
+7. Click **CREATE AND CONTINUE**
+8. Assign the "Editor" role
+9. Click **DONE**
+10. Click on the service account you just created
+11. Click **KEYS** tab
+12. Click **ADD KEY** -> **Create new key**
+13. Choose **JSON** format
+14. **IMPORTANT:** The key file will automatically download. Keep this file secure.
 
 ---
 
