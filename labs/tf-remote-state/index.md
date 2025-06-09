@@ -27,7 +27,7 @@ Create `backend.tf` with the following:
 ```hcl
 terraform {
   backend "gcs" {
-    bucket = "remote-state-jrs"
+    bucket = "remote-state-[YOUR_NAME]"
     prefix = "terraform/state"
   }
 }

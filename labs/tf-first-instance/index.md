@@ -4,13 +4,6 @@
 
 This lab walks through setting up Terraform and creating your first resources.
 
-## Authentication
-Before proceeding, authenticate with Google Cloud:
-
-```sh
-gcloud auth application-default login
-```
-
 ## Setup
 
 These instructions assume that you are using Visual Studio Code.
@@ -18,8 +11,8 @@ These instructions assume that you are using Visual Studio Code.
 ### Create a Working Directory
 
 1. Open **Visual Studio Code**.
-2. Click on **File** > **Open Folder...** and create a new folder in your Documents folder named with today's date (e.g., 20240329), and enter it.
-3. Inside the opened folder (e.g. 20240329), click the **New Folder** icon.
+2. Click on **File** > **Open Folder...** and create a new folder in your Documents folder named `unlocking terraform`.
+3. Inside the opened folder `unlocking terraform`, click the **New Folder** icon.
 4. Name the new folder `terraform` and double-click it to open it in Visual Studio Code.
 
 ## Create Terraform Configuration

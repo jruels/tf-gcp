@@ -1,17 +1,16 @@
-# Open the lab repo in VS Code
+# Create a working directory in VS Code
 
 ### Step 1: Open the folder
 
 1. Open Visual Studio Code
-2. In Visual Studio Code, click **File** -> **Open Folder** and browse to `C:\Users\TEKstudent\Downloads\repos\tf-dev`
-3. After opening the folder, click the third icon in the left toolbar for source control. Next to **changes**, click the three dots and choose **pull**.
+2. In Visual Studio Code, click **File** -> **Open Folder** and browse to your desired location. Create a new folder named `unlocking terraform` and enter it. Click **Open**.
 
 # Configure GCP credentials
 
 ### **Step 1: Set up GCP Service Account**
 
 1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the shared credentials in the spreadsheet below.
-    * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
+    * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gjUd6gSoROwD7CUSqehBAtP4J1IUas5TPhu5zoGbVLY/edit?gid=2103659978#gid=2103659978)
 2. Select your assigned project from the project dropdown at the top of the page
 3. Search for "IAM & Admin" in the search bar.
 4. Click **Service Accounts**
