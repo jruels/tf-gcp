@@ -1,7 +1,3 @@
-edit_file "setup-gcp.md" {
-  instructions = "I will create a new setup file for GCP configuration"
-  code_edit = """# Setup Student VM's
-
 # Open the lab repo in VS Code
 
 ### Step 1: Open the folder
