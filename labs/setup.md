@@ -10,7 +10,8 @@
 
 ### **Step 1: Set up GCP Service Account**
 
-1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the gcsb1@innovationinsoftware.com account.
+1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the shared credentials in the spreadsheet below.
+    * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
 2. Select your assigned project from the project dropdown at the top of the page
 3. Search for "IAM & Admin" in the search bar.
 4. Click **Service Accounts**
