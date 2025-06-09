@@ -4,6 +4,13 @@
 
 This lab walks through setting up Terraform and creating your first resources.
 
+## Authentication
+Before proceeding, authenticate with Google Cloud:
+
+```sh
+gcloud auth application-default login
+```
+
 ## Setup
 
 These instructions assume that you are using Visual Studio Code.
@@ -30,35 +37,50 @@ These instructions assume that you are using Visual Studio Code.
 ```hcl
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
+    google = {
+      source  = "hashicorp/google"
     }
   }
 }
 
-provider "aws" {
-  region  = "us-west-1"
+provider "google" {
+  project = "YOUR_PROJECT_ID"
+  region  = "us-west1"
 }
 
-resource "aws_instance" "lab1-tf-example" {
-  ami           = "ami-06e4ca05d431835e9"
-  instance_type = "t2.micro"
+resource "google_compute_instance" "lab1-tf-example" {
+  name         = "lab1-tf-example"
+  machine_type = "e2-micro"
+  zone         = "us-west1-a"
 
-  tags = {
-    Name = "Lab1-TF-example"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+
+  labels = {
+    name = "lab1-tf-example"
   }
 }
 ```
 
-This configuration is ready to be applied. We'll review each section in detail below.
+Replace 'YOUR_PROJECT_ID' with your actual project ID, once done this configuration is ready to be applied. We'll review each section in detail below.
 
 ## Providers
 
-Each Terraform module must declare required providers so that Terraform can install and use them. The `provider` block configures Terraform to use the AWS provider.
+Each Terraform module must declare required providers so that Terraform can install and use them. The `provider` block configures Terraform to use the Google provider.
 
 ### Security Note
 
-**Never hard-code credentials** into `*.tf` files. Instead, use stored AWS credentials configured in your AWS CLI or environment variables.
+**Never hard-code credentials** into `*.tf` files. Instead, use service account credentials configured through environment variables or application default credentials.
 
 ## Initialize the Directory
 
@@ -72,7 +94,7 @@ Each Terraform module must declare required providers so that Terraform can inst
 
 ## Format and Validate Configuration
 
-1. Run the following in the terminal 
+1. Run the following in the terminal 
    ```hcl
    terraform fmt
    ```
@@ -96,7 +118,7 @@ Each Terraform module must declare required providers so that Terraform can inst
      ```
    - Terraform will prompt for confirmation. Type **yes** when prompted.
 
-Terraform will create an AWS EC2 instance as specified in your configuration.
+Terraform will create a Google Compute Engine instance as specified in your configuration.
 
 ## Cleanup
 
@@ -111,5 +133,4 @@ To delete the resources created:
 
 ## Congratulations!
 
-You've successfully created and destroyed your first Terraform-managed infrastructure.
-
+You've successfully created and destroyed your first Terraform-managed infrastructure. 

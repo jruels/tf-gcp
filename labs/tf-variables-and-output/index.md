@@ -23,27 +23,28 @@ In this lab, you will update the existing `main.tf` file to use variables.
 
 ```hcl
 variable "instance_name" {
-  description    = "Name tag for EC2 instance"
-  type           = string
-  default        = "Lab2-TF-example"
+  description = "Name for GCE instance"
+  type        = string
+  default     = "lab2-tf-example"
 }
 ```
 
 ### Update `main.tf` to Use the Variable
 
 1. Open `main.tf` in `tf-lab2`.
-2. Update the `aws_instance` resource block to use the new variable:
+2. Update the `google_compute_instance` resource block to use the new variable:
 
 ```hcl
-  tags = {
-    Name = var.instance_name
+  name = var.instance_name
+  labels = {
+    name = var.instance_name
   }
 ```
 
 3. Rename the resource from `lab1-tf-example` to `lab2-tf-example`:
 
 ```hcl
-resource "aws_instance" "lab2-tf-example" {
+resource "google_compute_instance" "lab2-tf-example" {
  
 }
 ```
@@ -52,15 +53,24 @@ resource "aws_instance" "lab2-tf-example" {
 
 1. Open **Integrated Terminal** in `tf-lab2`.
 
-2. Run the following command:
+2. Initialize Terraform:
+   ```sh
+   terraform init
+   ```
 
+3. Create an execution plan:
+   ```sh
+   terraform plan
+   ```
+
+4. Apply the configuration:
    ```sh
    terraform apply
    ```
 
-3. If everything looks correct, type `yes` to confirm and apply the configuration.
+5. If everything looks correct, type `yes` to confirm and apply the configuration.
 
-4. Apply the configuration again, passing the variable via the command line:
+6. Apply the configuration again, passing the variable via the command line:
 
    ```sh
    terraform apply -var 'instance_name=SomeOtherName'
@@ -80,13 +90,18 @@ Variables passed via the command line are not saved, so they must be set each ti
 
 ```hcl
 output "instance_id" {
-  description    = "ID of the EC2 instance"
-  value          = aws_instance.lab2-tf-example.id
+  description = "ID of the GCE instance"
+  value       = google_compute_instance.lab2-tf-example.id
 }
 
-output "instance_private_ip" {
-  description   = "Private IP address of EC2 instance"
-  value       = aws_instance.lab2-tf-example.private_ip
+output "instance_internal_ip" {
+  description = "Internal IP address of GCE instance"
+  value       = google_compute_instance.lab2-tf-example.network_interface[0].network_ip
+}
+
+output "instance_external_ip" {
+  description = "External IP address of GCE instance"
+  value       = google_compute_instance.lab2-tf-example.network_interface[0].access_config[0].nat_ip
 }
 ```
 
@@ -102,8 +117,9 @@ output "instance_private_ip" {
    ```
 3. Example output:
    ```
-   instance_id = "i-0bf954919ed765de1"
-   instance_public_ip = "54.186.202.254"
+   instance_id = "projects/my-project/zones/us-west1-a/instances/lab2-tf-example"
+   instance_internal_ip = "10.128.0.2"
+   instance_external_ip = "34.82.123.45"
    ```
 
 Terraform outputs are useful for integrating with other infrastructure components or CI/CD pipelines.
@@ -117,4 +133,4 @@ Terraform outputs are useful for integrating with other infrastructure component
 
 ## Congratulations!
 
-You have successfully used Terraform variables and outputs.
+You have successfully used Terraform variables and outputs. 

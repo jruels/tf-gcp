@@ -1,4 +1,6 @@
-# Setup Student VM's
+edit_file "setup-gcp.md" {
+  instructions = "I will create a new setup file for GCP configuration"
+  code_edit = """# Setup Student VM's
 
 # Open the lab repo in VS Code
 
@@ -8,53 +10,55 @@
 2. In Visual Studio Code, click **File** -> **Open Folder** and browse to `C:\Users\TEKstudent\Downloads\repos\tf-dev`
 3. After opening the folder, click the third icon in the left toolbar for source control. Next to **changes**, click the three dots and choose **pull**.
 
-# Configure AWS credentials
+# Configure GCP credentials
 
-### **Step 1: Log into the AWS Console**
+### **Step 1: Set up GCP Service Account**
 
-1. In a browser, log into the [AWS Console](https://console.aws.amazon.com/) using the credentials in the spreadsheet below.
+1. In a browser, log into the [Google Cloud Console](https://console.cloud.google.com/) using the credentials in the spreadsheet below.
     * [Cloud credentials](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
-2. Search for IAM in the search bar.
-3. Click **IAM**
-4.Click **Users**.
-5. Click **autodev-admin**.
-6. Click **Security Credentials**.
-7. Scroll down to **Access Keys**
-   1. Click **Actions** -> and **Deactivate** and **Delete** any existing keys.
-8. Click **Create access key**
-9. Select **Command Line Interface (CLI)**. 
-10. Check the confirmation box at the bottom of the page and click **Next**.
-11. Skip the description and click **Create access key**.
-12. **IMPORTANT:** Copy the **Access key** and **Secret access key** and save them somewhere. You can optionally download the `csv` file for easy reference. 
+2. Search for "IAM & Admin" in the search bar.
+3. Click **Service Accounts**
+4. Click **CREATE SERVICE ACCOUNT**
+5. Name it "terraform-admin"
+6. Click **CREATE AND CONTINUE**
+7. Assign the "Editor" role
+8. Click **DONE**
+9. Click on the service account you just created
+10. Click **KEYS** tab
+11. Click **ADD KEY** -> **Create new key**
+12. Choose **JSON** format
+13. **IMPORTANT:** The key file will automatically download. Keep this file secure.
 
 ---
 
-### **Step 2: Use AWS Configure**
+### **Step 2: Configure GCloud CLI**
 
-1. In the Visual Studio Code Terminal run: 
+1. In the Visual Studio Code Terminal run:
 
    ```
-   aws configure
+   gcloud auth activate-service-account --key-file=PATH_TO_YOUR_SERVICE_ACCOUNT_KEY.json
    ```
 
-2. Supply the required information.
-   * Credentials 
-   * Region = `us-west-1`
-3. Select the default option for the remaining options.
+2. Set the default project:
+   ```
+   gcloud config set project PROJECT_ID
+   ```
+3. Set the default region:
+   ```
+   gcloud config set compute/region us-west1
+   ```
 
 ---
 
-### **Step 3: Test AWS CLI**
+### **Step 3: Test GCloud CLI**
 
-1. Confirm that `aws` can use the credentials.
+1. Confirm that `gcloud` is properly authenticated:
 
    ```
-   aws sts get-caller-identity
+   gcloud auth list
    ```
 
-2. You should see your account information returned.
-
-
+2. You should see your service account listed as active.
 
 ## Congratulations
 

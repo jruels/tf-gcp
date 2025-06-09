@@ -1,54 +1,40 @@
 # Terraform - remote state configuration
 
 ## Overview 
-In this lab, you will create an S3 bucket and migrate the Terraform state to a remote backend. 
+In this lab, you will create a Google Cloud Storage bucket and migrate the Terraform state to a remote backend. 
 
-## Create an S3 bucket 
-AWS requires every S3 bucket to have a unique name. For this reason, add your initials to the end of the bucket. The example below uses `jrs` as the initials.
+### Manual Bucket Creation
 
-For the following steps, replace all references to `remote-state-jrs` with your bucket name.
+First, manually create a GCS bucket for remote state:
 
-In the `tf-lab3/learn-terraform-variables` directory create a new file `s3.tf` with the following: 
-
-```hcl
-resource "aws_s3_bucket" "remote_state" {
-    bucket = "remote-state-jrs"
-    force_destroy = true
-    acl = "private"
-    
-    tags = {
-        Name = "remote state backend"
-    }
-}
-```
-
-So that we can easily retrieve the name of the bucket in the future add the following to `outputs.tf`
-```hcl
-output "s3_bucket" {
-  description = "S3 bucket name"
-  value       = aws_s3_bucket.remote_state.id
-}
-```
-Using Terraform apply the changes. 
+1. Go to the Google Cloud Console and select your project from the project dropdown at the top of the page
+2. Navigate to Cloud Storage > Buckets
+3. Click "CREATE BUCKET"
+4. Enter a unique name for your bucket (e.g., "remote-state-YOUR_NAME")
+5. Choose "US" for Location type
+6. Leave other settings as default
+7. Under "Labels" add:
+   - Key: name
+   - Value: remote-state-backend
+8. Click "CREATE"
 
 ## Migrate the state
-Now that we've created an S3 bucket, we need to migrate the state to the remote backend. 
+Now that we've created a Cloud Storage bucket, we need to migrate the state to the remote backend. 
 
 When creating the backend configuration remember to replace the `bucket` with the name of the bucket you created. 
 
 Create `backend.tf` with the following:
 ```hcl
 terraform {
-  backend "s3" {
-    region = "us-west-1"
+  backend "gcs" {
     bucket = "remote-state-jrs"
-    key = "state.tfstate"
+    prefix = "terraform/state"
   }
 }
 ```
 
 ## Reinitialize Terraform 
-Now that you have created the S3 bucket and configured the `backend.tf` you must run `terraform init` to migrate the state to the new remote backend. 
+Now that you have created the GCS bucket and configured the `backend.tf` you must run `terraform init` to migrate the state to the new remote backend. 
 
 If prompted to migrate the existing state type `yes`
 
@@ -56,14 +42,10 @@ If everything is successful, you should see a message that the backend was migra
 
 ## Cleanup
 
-Run the following to clean up the resources
-
+```bash
+terraform destroy
 ```
-terraform destroy -auto-approve
-```
-
-
 
 ## Congratulations
 
-You have successfully created an S3 bucket and migrated to a remote backend state.
+You have successfully created a Cloud Storage bucket and migrated to a remote backend state. 
