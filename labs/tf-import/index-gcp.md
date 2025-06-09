@@ -6,17 +6,19 @@ In this lab, you will create Google Cloud resources using the console and import
 ## Create instances in Google Cloud Console
 Create three Compute Engine instances in the Google Cloud Console. 
 
-1. Navigate to the Google Cloud Console and use the search bar at the top to search for "Compute Engine" and click on it.
+1. Navigate to the Google Cloud Console and select your project from the project dropdown at the top of the page.
 
-2. In the Compute Engine dashboard, click on "CREATE INSTANCE".
+2. Use the search bar at the top to search for "Compute Engine" and click on it.
 
-3. For each instance, configure the following:
+3. In the Compute Engine dashboard, click on "CREATE INSTANCE".
+
+4. For each instance, configure the following:
    - Name: Leave as default (will be changed later)
    - Region/Zone: Select your preferred region (e.g., us-central1-a)
    - Machine configuration: Select "E2" series and "e2-micro"
    - Leave other settings as default
 
-4. Click "Create" and repeat this process two more times for a total of 3 instances.
+5. Click "Create" and repeat this process two more times for a total of 3 instances.
 
 ## Create Terraform configuration 
 While waiting for the instances to launch, create a new working directory and configuration file. 

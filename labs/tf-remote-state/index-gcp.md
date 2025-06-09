@@ -7,7 +7,7 @@ In this lab, you will create a Google Cloud Storage bucket and migrate the Terra
 
 First, manually create a GCS bucket for remote state:
 
-1. Go to the Google Cloud Console
+1. Go to the Google Cloud Console and select your project from the project dropdown at the top of the page
 2. Navigate to Cloud Storage > Buckets
 3. Click "CREATE BUCKET"
 4. Enter a unique name for your bucket (e.g., "remote-state-YOUR_NAME")
