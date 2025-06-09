@@ -98,6 +98,8 @@ This configuration creates a public Cloud Storage bucket configured for website 
 
 You will notice that there is no provider block in this configuration. When Terraform processes a module block, it will inherit the provider from the enclosing configuration. Because of this, there's no need to include `provider` blocks in modules.
 
+Make sure you're using your Google Cloud project ID for all resources in this module.
+
 Define the following variables in `variables.tf` inside the `modules/gcp-storage-static-website-bucket` directory:
 
 ```hcl
