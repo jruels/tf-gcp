@@ -1,12 +1,11 @@
-# Terraform Developer
+# Unlocking Terraform 
 
-This site includes the information for the Terraform Developer class.
+This site includes the information for the Unlocking Terraform class.
 
 
 
 ## Lab details 
-[Windows VM information](VM_access.md)  
-[Lab environment details](https://docs.google.com/spreadsheets/d/1gTV6btPeIyyXylRkDn2_LNbWkf9BGU6wsi5eIb-ynLY/edit?gid=2103659978#gid=2103659978)
+[GCP environment details](https://docs.google.com/spreadsheets/d/1gjUd6gSoROwD7CUSqehBAtP4J1IUas5TPhu5zoGbVLY/edit?usp=sharing)
 
 ### Day 1   
 Lab 0: [Setup VM](labs/setup.md)   
@@ -16,24 +15,3 @@ Lab 3: [Multi resource deployment](labs/tf-more-variables)
 Lab 4: [Strings, bool, and numbers](labs/tf-even-more-variables)   
 Lab 5: [Enable remote state](labs/tf-remote-state)   
 
-### Day 2
-Lab 6: [Import existing resources](labs/tf-import)  
-Lab 7: [Provisioners](labs/tf-provisioner)  
-Lab 8: [Use registry modules](labs/tf-module)  
-Lab 9: [Write your own module](labs/tf-write-module)  
-Lab 10: [Refactor monolithic codebase](labs/tf-refactor)  
-
-### Day 3
-Lab 11: [Access Ansible VMs](labs/ansible-setup)  
-Lab 12: [Install Ansible Tower](labs/install-aap/)  
-Lab 13: [AAP inventory and credentials](labs/aap-inventory-creds-ad-hoc/)  
-Lab 14: [AAP projects and jobs](labs/aap-projects-templates-jobs/)  
-Lab 15: [Ansible handling](labs/error-handling)  
-
-### Day 4
-[Download Go Files](go_foundation_files.zip)  
-[Go Slides](go_slides.pdf)  
-
-
-### Day 5 
-[Terraform custom providers](https://github.com/jruels/tf-dev/tree/main/labs/tf-custom-providers)
