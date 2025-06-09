@@ -19,13 +19,18 @@ In this lab, you will update the existing `main.tf` file to use variables.
 
 1. Right-click inside `tf-lab2` and select **New File**.
 2. Name the file `variables.tf` and open it.
-3. Paste the following variable definition:
+3. Paste the following variable definitions (make sure to set your project_id):
 
 ```hcl
 variable "instance_name" {
   description = "Name for GCE instance"
   type        = string
   default     = "lab2-tf-example"
+}
+
+variable "project_id" {
+  description = "The ID of your Google Cloud project"
+  type        = string
 }
 ```
 
