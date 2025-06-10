@@ -4,6 +4,34 @@ This lab will walk you through the fundamental features of GitLab and help you c
 
 ## Part 1: Getting Started with GitLab
 
+### Set Up SSH Key in GitLab
+1. Generate an SSH key (if you don't have one):
+   ```bash
+   ssh-keygen -t ed25519 -C "your.email@example.com"
+   ```
+
+2. Copy your public key to clipboard:
+   ```bash
+   # For macOS
+   tr -d '\n' < ~/.ssh/id_ed25519.pub | pbcopy
+   
+   # For Linux (requires xclip)
+   xclip -sel clip < ~/.ssh/id_ed25519.pub
+   
+   # For Windows Git Bash
+   cat ~/.ssh/id_ed25519.pub | clip
+   ```
+
+3. Add the key to GitLab:
+   - Sign in to GitLab
+   - Click your avatar in the top right
+   - Select "Edit profile"
+   - On the left sidebar, select "SSH Keys"
+   - Click "Add new key"
+   - Paste your public key in the "Key" box
+   - Add a title (e.g., "Work Laptop")
+   - Click "Add key"
+
 ### Create a New Project
 1. Log into GitLab
 2. Click the "+" button in the top navigation bar
@@ -11,40 +39,41 @@ This lab will walk you through the fundamental features of GitLab and help you c
 4. Choose "Create blank project"
 5. Fill in the following:
    - Project name: `my-first-pipeline`
-   - Project slug: (automatically filled)
+   - Project URL: Make sure your username is selected (NOT any group)
    - Visibility Level: Public
    - Initialize repository with a README: Yes
 6. Click "Create project"
 
-### Explore the GitLab Interface
-Take a moment to explore the left sidebar menu:
-- **Project Information**
-  - Overview
-  - Details
-  - Activity
-  - Releases
-- **Repository**
-  - Files
-  - Commits
-  - Branches
-  - Tags
-- **Issues**
-  - List
-  - Boards
-  - Labels
-  - Milestones
-- **Merge Requests**
-- **CI/CD**
-  - Pipelines
-  - Jobs
-  - Environments
+The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pipeline`
 
 ## Part 2: Basic Repository Management
 
 ### Clone Your Repository
-1. Click the "Clone" button
-2. Copy the HTTPS URL
-3. Open your terminal and run:
+1. Configure git (if you haven't already):
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "your.email@example.com"
+   ```
+
+2. Set up SSH key (if you haven't already):
+   ```bash
+   # Generate SSH key
+   ssh-keygen -t ed25519 -C "your.email@example.com"
+   
+   # Start the SSH agent
+   eval "$(ssh-agent -s)"
+   
+   # Add your SSH key to the agent
+   ssh-add ~/.ssh/id_ed25519
+   
+   # Copy your public key
+   cat ~/.ssh/id_ed25519.pub
+   ```
+   Then add the copied key to GitLab: Settings → SSH Keys
+
+3. Click the "Clone" button
+4. Copy the SSH URL (not HTTPS)
+5. Open your terminal and run:
    ```bash
    git clone <your-repo-url>
    cd my-first-pipeline
@@ -52,10 +81,8 @@ Take a moment to explore the left sidebar menu:
 
 ### Create a Simple Application
 1. Create a new file called `index.html`:
-   ```bash
-   touch index.html
-   ```
-2. Add the following content to `index.html`:
+   Create a new file called `index.html` and add the following content using your preferred code editor:
+
    ```html
    <!DOCTYPE html>
    <html>
@@ -70,11 +97,9 @@ Take a moment to explore the left sidebar menu:
    ```
 
 ### Create Your First Pipeline
-1. Create a new file called `.gitlab-ci.yml`:
-   ```bash
-   touch .gitlab-ci.yml
-   ```
-2. Add this basic pipeline configuration:
+1. 
+   Create a new file called `.gitlab-ci.yml` and add the following content using your preferred code editor:
+
    ```yaml
    stages:
      - test
@@ -115,13 +140,20 @@ Take a moment to explore the left sidebar menu:
 ```bash
 git add index.html .gitlab-ci.yml
 git commit -m "Add website and pipeline configuration"
-git push origin main
+
+# Debug git push issues
+git remote -v  # Check remote URL
+git config --get remote.origin.url  # Verify remote URL
+ssh -T git@gitlab.com  # Test SSH connection to GitLab
+
+# If everything looks good, push
+git push -u origin main
 ```
 
 ## Part 3: Understanding CI/CD Features
 
 ### Pipeline Visualization
-1. Go to CI/CD → Pipelines
+1. In Gitlab, go to Build → Pipelines
 2. You should see your pipeline running
 3. Click on the pipeline to see the stages:
    - Test stage: Verifies the HTML file exists
@@ -141,8 +173,8 @@ git push origin main
 2. Explore key settings:
    - Runners
    - Variables
-   - Pipeline triggers
-   - Pipeline schedules
+   - Artifacts
+   - Secure files
 
 ## Part 4: Working with Branches
 
@@ -176,14 +208,12 @@ git push origin main
    </body>
    </html>
    ```
-
 3. Commit and push:
    ```bash
    git add index.html
    git commit -m "Add CSS styling"
    git push origin feature/add-styling
    ```
-
 ### Create a Merge Request
 1. Go to Merge Requests → New merge request
 2. Select:
@@ -203,7 +233,7 @@ git push origin main
 ## Part 5: GitLab Pages
 
 ### View Your Deployed Site
-1. Go to Settings → Pages
+1. Go to Deploy → Pages
 2. You should see your site's URL (usually `https://<username>.gitlab.io/<project-name>`)
 3. Click the URL to view your deployed website
 
@@ -224,7 +254,7 @@ git push origin main
 4. Use markdown formatting to structure your content
 
 ### Analytics
-1. Explore Analytics → Repository
+1. Explore Analyze → Repository Analytics
 2. View commit history and contribution graphs
 3. Check CI/CD analytics for pipeline performance
 
@@ -243,3 +273,5 @@ Next Steps:
 - Set up code quality checks
 - Configure automated testing
 - Implement security scanning 
+
+
