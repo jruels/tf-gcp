@@ -1,6 +1,7 @@
 # Terraform - remote state configuration
 
 ## Overview 
+The following lab instructions are to be run in the `tf-lab3` directory. 
 In this lab, you will create a Google Cloud Storage bucket and migrate the Terraform state to a remote backend. 
 
 ### Manual Bucket Creation
