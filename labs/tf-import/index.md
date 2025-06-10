@@ -23,7 +23,7 @@ Create three Compute Engine instances in the Google Cloud Console.
 ## Create Terraform configuration 
 While waiting for the instances to launch, create a new working directory and configuration file. 
 
-1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
+1. In **Visual Studio Code**, open the working directory `unlocking terraform`.
 
 2. Right-click in the **Explorer** pane and select **New Folder**.
 
@@ -45,9 +45,9 @@ While waiting for the instances to launch, create a new working directory and co
      - network: `default`
    - labels:
      - role: `terraform`
-     - name: `tf-example-import-${count.index}`
+     - name: `tf-example-import`
 
-Remember, this resource block is for three instances. You will need to add the `count.index` to the instance name and labels. If you get stuck, ask the instructor for assistance.
+**IMPORTANT**: This resource block is for three instances. You will need to add the `count.index` to the instance name and labels. If you get stuck, ask the instructor for assistance.
 
 ## Import the configuration 
 Now that you've created the instances and the Terraform configuration, first initialize Terraform:
