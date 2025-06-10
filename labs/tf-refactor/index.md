@@ -1,234 +1,377 @@
 # Terraform Refactor codebase
 
 ## Overview 
-In this lab, you will refactor a monolithic Terraform configuration into a modular design. 
+In this lab, you will refactor a monolithic Terraform configuration into a more maintainable design. 
 
-You will provision two instances of a web application hosted in an S3 bucket that represent production and development environments. The configuration you use to deploy the application will start as a monolith. You will modify it to step through the common phases of evolution for a Terraform project, until each environment has its own independent configuration and state.
+You will start with two copies of a web application hosted in Cloud Storage buckets (one for production, one for development). Then you will refactor this to use a single set of resources with environment-specific variables.
 
 ## Start with a monolith configuration
 ### Create the Lab Directory
 
 1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
 2. Right-click in the **Explorer** pane and select **New Folder**.
-3. Name the folder `tf-refactor`.
-4. Open `tf-refactor` in the **Integrated Terminal**.
+3. Name the folder `tf-lab7`.
+4. Create the following files in your `tf-lab7` directory:
 
-Clone the GitHub repository.
-```sh
-git clone https://github.com/jruels/learn-terraform-code-organization
-```
-
-Enter the directory.
-```sh
-cd learn-terraform-code-organization
-```
-
-Your root directory contains four files and an "assets" folder. The root directory files compose the configuration as well as the inputs and outputs of your deployment.
-
-`main.tf` - configures the resources that make up your infrastructure.
-
-`variables.tf` - declares input variables for your `dev` and `prod` environment prefixes, and the AWS region to deploy to.
-
-`terraform.tfvars.example` - defines your region and environment prefixes.
-
-`outputs.tf` - specifies the website endpoints for your dev and prod buckets.
-
-`assets` - houses your webapp HTML file.
-
-Review the `main.tf` file. The file consists of a few different resources:
-
-- The `random_pet` resource creates a string to be used as part of the unique name of your S3 bucket.
-- Two `aws_s3_bucket` resources designated `prod` and `dev`, which each create an S3 bucket. Notice that the `bucket` argument defines the S3 bucket name by interpolating the environment prefix and the `random_pet` resource name.
-- Two `aws_s3_bucket_acl` resources designated `prod` and `dev`, which set a `public-read` ACL for your buckets.
-- Two `aws_s3_bucket_website_configuration` resources designated `prod` and `dev`, which configure your buckets to host websites.
-- Two `aws_s3_bucket_policy` resources designated `prod` and `dev`, which allow anyone to read the objects in the corresponding bucket.
-- Two `aws_s3_object` resources designated `prod` and `dev`, which load the file in the local `assets` directory using the [built in `file()`function](https://developer.hashicorp.com/terraform/language/functions/file) and upload it to your S3 buckets.
-
-Terraform requires unique identifiers - in this case `prod` or `dev` for each `s3` resource - to create separate resources of the same type.
-
-Open the `terraform.tfvars.example` file in your repository and edit it with your own variable definitions. Confirm the region is `us-west-1`
+`main.tf` - configures the resources that make up your infrastructure:
 
 ```hcl
-region = "us-west-1"
-prod_prefix = "prod"
-dev_prefix = "dev"
-```
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1.0"
+    }
+  }
+}
 
-Save your changes and rename the file to `terraform.tfvars`. Terraform automatically loads variable values from any files that end in `.tfvars`.
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
 
-```sh
-mv terraform.tfvars.example terraform.tfvars
-```
-In your terminal, initialize your Terraform project, and apply the configuration.
+resource "random_pet" "petname" {
+  length    = 3
+  separator = "-"
+}
 
-Navigate to the web address from the Terraform output to display the deployment in a browser. Your directory now contains a state file, `terraform.tfstate`.
+# Production bucket
+resource "google_storage_bucket" "prod" {
+  name          = "${var.prod_prefix}-${random_pet.petname.id}"
+  location      = var.region
+  force_destroy = true
 
-## Separate the configuration
+  uniform_bucket_level_access = true
 
-Defining multiple environments in the same `main.tf` file may become hard to manage as you add more resources. HCL is meant to be human-readable and supports using multiple configuration files to help organize your infrastructure.
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
 
-You will organize your current configuration by separating the configurations into two separate files — one root module for each environment. To split the configuration, copy `main.tf` and name it `dev.tf`, then rename `main.tf` to `prod.tf`
+resource "google_storage_bucket_object" "prod" {
+  name          = "index.html"
+  bucket        = google_storage_bucket.prod.name
+  content       = file("${path.module}/assets/index.html")
+  content_type  = "text/html"
+}
 
-Now you have two identical files. Remove any references to the production environment in `dev.tf` by deleting the resource blocks with the `prod` ID. Repeat the process for `prod.tf` by removing any resource blocks with the `dev` ID.
+# Development bucket
+resource "google_storage_bucket" "dev" {
+  name          = "${var.dev_prefix}-${random_pet.petname.id}"
+  location      = var.region
+  force_destroy = true
 
-Your directory structure will look similar to: 
-```
-.
-├── README.md
-├── assets
-│   └── index.html
-├── dev.tf
-├── outputs.tf
-├── prod.tf
-├── terraform.tfstate
-├── terraform.tfvars
-└── variables.tf
-```
+  uniform_bucket_level_access = true
 
-Although your resources are organized in environment-specific files, your `variables.tf` and `terraform.tfvars` files contain the variable declarations and definitions for both environments.
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
 
-Terraform loads all configuration files within a directory and appends them together, so any resources or providers with the same name in the same directory will cause a validation error. If you were to run a `terraform` command now, your `random_pet` resource and `provider` block would cause errors since they are duplicated across the two files.
-
-Edit the `prod.tf` file by commenting out the `terraform` block, the `provider` block, and the `random_pet` resource. You can comment out the configuration by adding a `/*` at the beginning of the commented out block and a `*/` at the end, as shown below.
-
-```hcl
-/*
- terraform {
-   required_providers {
-     aws = {
-       source = "hashicorp/aws"
-       version = "~> 4.0.0"
-     }
-     random = {
-       source  = "hashicorp/random"
-       version = "~> 3.1.0"
-     }
-   }
- }
-
- provider "aws" {
-   region = var.region
- }
-
- resource "random_pet" "petname" {
-   length    = 3
-   separator = "-"
- }
-*/
-```
-
-With your `prod.tf` shared resources commented out, your production environment will still inherit the value of the `random_pet` resource in your `dev.tf` file.
-
-## Simulate a hidden dependency
-
-You may want your development and production environments to share bucket names, but the current configuration is particularly dangerous because of the hidden resource dependency built into it. Imagine that you want to test a random pet name with four words in development. In `dev.tf`, update your `random_pet` resource's length attribute to `4`.
-
-You might think you are only updating the development environment because you only changed `dev.tf`, but remember, this value is referenced by both `prod` and `dev` resources.
-
-Apply the changes. 
-
-Note that the message stating your resources have changed. In this scenario, you encountered a hidden resource dependency because both bucket names rely on the same resource.
-
-Carefully review Terraform execution plans before applying them. If an operator does not carefully review the plan output or if CI/CD pipelines automatically apply changes, you may accidentally apply breaking changes to your resources.
-
-Destroy your resources before continuing the lab.
-
-```sh
-terraform destroy
-```
-
-## Separate states
-
-The previous operation destroyed both the development and production environment resources. When working with monolithic configuration, you can use the `terraform apply` command with the `-target` flag to scope the resources to operate on, but that approach can be risky and is not a sustainable way to manage distinct environments. For safer operations, you need to separate your development and production state.
-
-State separation signals more mature usage of Terraform; with additional maturity comes additional complexity. There are two primary methods to separate state between environments: directories and workspaces.
-
-To separate environments with potential configuration differences, use a directory structure. Use workspaces for environments that do not greatly deviate from one another, to avoid duplicating your configurations. Try both methods below to understand which will serve your infrastructure best.
-
-## Directories 
-By creating separate directories for each environment, you can shrink the blast radius of your Terraform operations and ensure you will only modify intended infrastructure. Terraform stores your state files on disk in their corresponding configuration directories. Terraform operates only on the state and configuration in the working directory by default.
-
-Directory-separated environments rely on duplicate Terraform code. This may be useful if you want to test changes in a development environment before promoting them to production. However, the directory structure runs the risk of creating drift between the environments over time. If you want to reconfigure a project with a single state file into directory-separated states, you must perform advanced state operations to move the resources.
-
-
-### Create `prod` and `dev` directories
-1. Create directories named `prod` and `dev`.
-
-```sh
-mkdir prod && mkdir dev
-```
-
-2. Move the `dev.tf` file to the `dev` directory, and rename it to `main.tf`.
-
-3. Copy the `variables.tf`, `terraform.tfvars`, and `outputs.tf` files to the `dev` directory.
-
-Your environment directories are now one step removed from the `assets` folder where your webapp lives. Open the `dev/main.tf` file in your text editor and edit the file to reflect this change by editing the file path in the `content` argument of the `aws_s3_bucket_object` resource with a `/..` before the assets subdirectory.
-
-```hcl
-resource "aws_s3_bucket_object" "dev" {
-  acl          = "public-read"
-  key          = "index.html"
-  bucket       = aws_s3_bucket.dev.id
--  content      = file("${path.module}/assets/index.html")
-+  content      = file("${path.module}/../assets/index.html")
-  content_type = "text/html"
+resource "google_storage_bucket_object" "dev" {
+  name          = "index.html"
+  bucket        = google_storage_bucket.dev.name
+  content       = file("${path.module}/assets/index.html")
+  content_type  = "text/html"
 }
 ```
 
-You will need to remove the references to the `prod` environment from your `dev` configuration files.
+`variables.tf` - declares input variables:
 
-First, open `dev/outputs.tf` in your text editor and remove the reference to the `prod` environment, then remove 
+```hcl
+variable "project_id" {
+  description = "Google Cloud Project ID"
+  type        = string
+}
 
-Remove all references to `prod` in `dev/outputs.tf`, `dev/variables.tf`, and `dev/terraform.tfvars`.
+variable "region" {
+  description = "Region for GCP resources"
+  type        = string
+  default     = "us-central1"
+}
 
-### Update `prod` configuration
+variable "prod_prefix" {
+  description = "Prefix for production resources"
+  type        = string
+  default     = "prod"
+}
 
-1. Rename `prod.tf` to `main.tf` and move it to your `prod` directory.`
+variable "dev_prefix" {
+  description = "Prefix for development resources"
+  type        = string
+  default     = "dev"
+}
+```
 
-2. Move `variables.tf`, `terraform.tfvars`, and `outputs.tf` to the `prod` directory.
+`terraform.tfvars` - defines your variables:
 
-First, open `prod/main.tf` and edit it to reflect new directory structure by adding `/..` to the file path in the content argument of the `aws_s3_bucket_object`, before the `assets` subdirectory.
+```hcl
+project_id  = "YOUR_PROJECT_ID"
+region      = "us-central1"
+prod_prefix = "prod"
+dev_prefix  = "dev"
+```
 
-Next, remove the references to the `dev` environment from `prod/variables.tf`, `prod/outputs.tf`, and `prod/terraform.tfvars`.
+`outputs.tf` - specifies the website endpoints:
 
-Finally, uncomment the `terraform` block, the `provider` block, and the `random_pet` resource in `prod/main.tf`.
+```hcl
+output "prod_website_url" {
+  description = "URL of the production website"
+  value       = "https://storage.googleapis.com/${google_storage_bucket.prod.name}/index.html"
+}
 
-After reorganizing your environments into directories, your file structure should look like the one below.
+output "dev_website_url" {
+  description = "URL of the development website"
+  value       = "https://storage.googleapis.com/${google_storage_bucket.dev.name}/index.html"
+}
+```
 
+Create an `assets` directory and add an `index.html` file with some sample content:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Static Website</title>
+</head>
+<body>
+    <h1>Welcome to my website!</h1>
+</body>
+</html>
+```
+
+Initialize and apply your Terraform configuration:
+
+```sh
+terraform init
+terraform apply
+```
+
+Navigate to the web addresses from the Terraform output to display the deployments in a browser.
+
+Clean up the monolithic resources before refactoring:
+```bash
+terraform destroy -auto-approve
+```
+
+## Refactor the configuration
+
+Having duplicate resources for each environment creates maintenance overhead and potential inconsistencies. Let's refactor to use a single set of resources with environment-specific variables.
+
+1. Update `variables.tf` to use environment variables:
+
+```hcl
+variable "project_id" {
+  description = "Google Cloud Project ID"
+  type        = string
+}
+
+variable "region" {
+  description = "Region for GCP resources"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "environment" {
+  description = "Environment (dev or prod)"
+  type        = string
+}
+```
+
+2. Create environment-specific variable files:
+
+`dev.tfvars`:
+```hcl
+project_id         = "YOUR_PROJECT_ID"
+region            = "us-central1"
+environment       = "dev"
+```
+
+`prod.tfvars`:
+```hcl
+project_id         = "YOUR_PROJECT_ID"
+region            = "us-central1"
+environment       = "prod"
+```
+
+3. Update `main.tf` to use a single set of resources:
+
+```hcl
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1.0"
+    }
+  }
+}
+
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+resource "random_pet" "petname" {
+  length    = 3
+  separator = "-"
+}
+
+resource "google_storage_bucket" "website" {
+  name          = "${var.environment}-${random_pet.petname.id}"
+  location      = var.region
+  force_destroy = true
+
+  uniform_bucket_level_access = true
+
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+
+  labels = {
+    environment = var.environment
+  }
+}
+
+resource "google_storage_bucket_iam_member" "website" {
+  bucket = google_storage_bucket.website.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
+}
+
+resource "google_storage_bucket_object" "website" {
+  name          = "index.html"
+  bucket        = google_storage_bucket.website.name
+  content       = file("${path.module}/assets/index.html")
+  content_type  = "text/html"
+}
+```
+
+4. Update `outputs.tf` to use the single resource:
+
+```hcl
+output "website_url" {
+  description = "URL of the website"
+  value       = "https://storage.googleapis.com/${google_storage_bucket.website.name}/index.html"
+}
+```
+
+## Deploy the environments
+
+First, let's look at what would be created in each environment:
+
+```bash
+terraform plan -var-file="dev.tfvars"
+```
+
+Notice how the bucket will be created with the `environment = "dev"` label.
+
+Now check the production plan:
+```bash
+terraform plan -var-file="prod.tfvars"
+```
+
+Notice the difference in the bucket's label where `environment = "prod"`.
+
+
+
+## Important Note About State Management
+
+While using different tfvars files makes the code more maintainable, it introduces challenges when running Terraform locally:
+
+1. You need to remember to destroy one environment before creating another (since they share the same state file)
+2. There's risk of accidentally applying the wrong tfvars file
+3. Multiple team members could try to manage different environments simultaneously
+
+This is why in real-world scenarios, you should:
+1. Run Terraform through CI/CD pipelines
+2. Use separate state files for each environment
+3. Implement proper state locking
+
+These topics will be covered in the next lab on CI/CD integration.
+
+## Cleanup
+
+Clean up the resources:
+```bash
+terraform destroy -var-file="prod.tfvars"
+```
+
+## Congratulations!
+
+You have successfully:
+1. Started with a monolithic configuration that had duplicate resources
+2. Refactored it to use a single set of resources with environment-specific variables
+3. Learned how to deploy to different environments using tfvars files
+
+## Problems with this Approach
+
+While the above approach works, it has several drawbacks:
+
+1. **Code Duplication**: Having separate directories means duplicating code between environments, which can lead to:
+   - Maintenance overhead
+   - Inconsistencies between environments
+   - Higher chance of errors when making changes
+
+2. **Harder to Add Environments**: Adding a new environment (like staging) requires:
+   - Creating a new directory
+   - Copying all files
+   - Maintaining another set of identical code
+
+3. **No Single Source of Truth**: When infrastructure code exists in multiple places, it's harder to:
+   - Ensure all environments are using the same resource configurations
+   - Track changes across environments
+   - Maintain consistency
+
+## A Better Approach
+
+A better way to manage multiple environments is to:
+
+1. Keep a single set of Terraform configurations
+2. Use environment-specific `.tfvars` files
+3. Use workspace or backend configurations for state management
+
+Example:
+
+Instead of separate directories, your structure should look like:
 ```
 .
-├── assets
-│   ├── index.html
-├── prod
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── terraform.tfstate
-│   └── terraform.tfvars
-└── dev
-    ├── main.tf
-    ├── variables.tf
-    ├── terraform.tfstate
-    └── terraform.tfvars
+├── assets/
+│   └── index.html
+├── main.tf           # Single source of truth for all environments
+├── variables.tf      # All variable definitions
+├── outputs.tf        # All outputs
+├── dev.tfvars       # Development environment values
+└── prod.tfvars      # Production environment values
 ```
 
-
-### Deploy environments 
-To deploy the `dev` environment, change to the `dev` directory, initialize Terraform, and apply the configuration.
-
-You now have only one output from this deployment. Check your website endpoint in a browser.
-
-Repeat these steps for your production environment.
-
-
-After completing this lab, you should have a `dev` and `prod` environment successfully deployed. 
-
-Your development and production environments are in separate directories, each with its configuration files and state.
-
-
-### Cleanup
-```sh
-terraform destroy
+Then deploy to different environments using:
+```bash
+terraform apply -var-file="dev.tfvars"   # For development
+terraform apply -var-file="prod.tfvars"  # For production
 ```
 
-## Congrats!
+Benefits:
+1. Single source of truth for infrastructure code
+2. Easy to add new environments (just add a new .tfvars file)
+3. Guaranteed consistency between environments
+4. Easier to maintain and update
+5. Better version control and change tracking
 
+## Next Steps
+
+In a real-world scenario, you would:
+1. Use different state files for each environment (using backend configuration)
+2. Implement proper state locking
+3. Use CI/CD pipelines for deployments
+4. Add environment-specific access controls 

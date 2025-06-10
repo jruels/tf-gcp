@@ -15,3 +15,9 @@ Lab 3: [Multi resource deployment](labs/tf-more-variables/index.md)
 Lab 4: [Strings, bool, and numbers](labs/tf-even-more-variables/index.md)   
 Lab 5: [Enable remote state](labs/tf-remote-state/index.md)   
 
+### Day 2  
+Lab 6: [Import existing resources](labs/tf-import/index.md)   
+Lab 7: [Provisioners](labs/tf-provisioner/index.md)   
+Lab 8: [Use registry modules](labs/tf-module/index.md)   
+Lab 9: [Write your own module](labs/tf-write-module/index.md)   
+Lab 10: [Refactor monolithic codebase](labs/tf-refactor/index.md)   

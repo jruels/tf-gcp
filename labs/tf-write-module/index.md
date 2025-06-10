@@ -1,7 +1,7 @@
 # Write a Terraform module
 
 ## Overview
-In this lab, you will create a module to manage AWS S3 buckets to host static websites.
+In this lab, you will create a module to manage Google Cloud Storage buckets to host static websites.
 
 ## Module structure
 
@@ -19,7 +19,7 @@ None of these files are required, or have any special meaning to Terraform when 
 Each of these files serves a purpose:
 
 - `LICENSE` will contain the license under which your module will be distributed. When you share your module, the `LICENSE` file will let people using it know the terms under which it has been made available. Terraform itself does not use this file.
-- `README.md` will contain documentation describing how to use your module, in markdown format. Terraform does not use this file, but services like the Terraform Registry and GitHub will display the contents of this file to people who visit your module's Terraform Registry or GitHub page`
+- `README.md` will contain documentation describing how to use your module, in markdown format. Terraform does not use this file, but services like the Terraform Registry and GitHub will display the contents of this file to people who visit your module's Terraform Registry or GitHub page.
 - `main.tf` will contain the main set of configuration for your module. You can also create other configuration files and organize them however makes sense for your project.
 - `variables.tf` will contain the variable definitions for your module. When your module is used by others, the variables will be configured as arguments in the `module block`. Since all Terraform values must be defined, any variables that are not given a default value will become required arguments. Variables with default values can also be provided as module arguments, overriding the default value.
 - `outputs.tf` will contain the output definitions for your module. Module outputs are made available to the configuration using the module, so they are often used to pass information about the parts of your infrastructure defined by the module to other parts of your configuration.
@@ -36,210 +36,196 @@ You also want to make sure and add the following to your ignore list. If you are
 
 1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
 2. Right-click in the **Explorer** pane and select **New Folder**.
-3. Name the folder `tf-lab5`.
-4. Right click `tf-lab5` and click **Open in Integrated Terminal**.
-
-Clone the GitHub repository.
-```sh
-git clone https://github.com/jruels/learn-terraform-modules-create.git
-```
-
-Enter the directory.
-```sh
-cd learn-terraform-modules-create
-```
-
-Ensure that Terraform has downloaded all the necessary providers and modules by running `terraform init`.
-
-In this lab, you will create a local submodule within your existing configuration that uses the s3 bucket resource from the AWS provider.
-
-Inside your `tf-lab5/learn-terraform-modules-create` folder, create a sub-folder called `modules`. In the new `modules` folder create a sub-folder named `aws-s3-static-website-bucket`. 
-
-
+3. Name the folder `tf-lab6`.
+4. Create a sub-folder called `modules` inside `tf-lab6`.
+5. Inside `modules`, create a sub-folder named `gcp-storage-static-website-bucket`.
 
 After creating these directories, your configuration's directory structure will look like this:
 ```
-learn-terraform-modules-create
+tf-lab6
 ├── LICENSE
 ├── README.md
 ├── main.tf
 ├── modules
-│   └── aws-s3-static-website-bucket
+│   └── gcp-storage-static-website-bucket
 ├── outputs.tf
 └── variables.tf
 ```
 
+Hosting a static website with Cloud Storage is a fairly common use case. While it isn't too difficult to figure out the correct configuration to provision a bucket this way, encapsulating this configuration within a module will provide your users with a quick and easy way to create buckets they can use to host static websites that adhere to best practices. Another benefit of using a module is that the module name can describe exactly what buckets created with it are for. In this example, the `gcp-storage-static-website-bucket` module creates Cloud Storage buckets that host static websites.
 
-Hosting a static website with S3 is a fairly common use case. While it isn't too difficult to figure out the correct configuration to provision a bucket this way, encapsulating this configuration within a module will provide your users with a quick and easy way create buckets they can use to host static websites that adhere to best practices. Another benefit of using a module is that the module name can describe exactly what buckets created with it are for. In this example, the `aws-s3-static-website-bucket` module creates S3 buckets that host static websites.
+You will work with three Terraform configuration files inside the `gcp-storage-static-website-bucket` directory: `main.tf`, `variables.tf`, and `outputs.tf`.
 
-You will work with three Terraform configuration files inside the `aws-s3-static-website-bucket` directory: `main.tf`, `variables.tf`, and `outputs.tf`.
-
-Inside the `modules/aws-s3-static-website-bucket` directory, create a `main.tf`  with the following: 
+Inside the `modules/gcp-storage-static-website-bucket` directory, create a `main.tf` with the following: 
 
 ```hcl
-resource "aws_s3_bucket" "s3_bucket" {
-  bucket = var.bucket_name
+resource "google_storage_bucket" "website" {
+  name          = var.bucket_name
+  location      = var.location
+  force_destroy = true
 
-  tags = var.tags
-}
+  uniform_bucket_level_access = true
 
-resource "aws_s3_bucket_cors_configuration" "s3_bucket" {
-  bucket = aws_s3_bucket.s3_bucket.id  
-
-  cors_rule {
-    allowed_headers = ["*"]
-    allowed_methods = ["GET", "HEAD"]
-    allowed_origins = ["*"]
-    expose_headers  = ["ETag"]
-    max_age_seconds = 3000
-  }  
-}
-
-resource "aws_s3_bucket_website_configuration" "s3_bucket" {
-  bucket = aws_s3_bucket.s3_bucket.id
-
-  index_document {
-    suffix = "index.html"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
   }
 
-  error_document {
-    key = "error.html"
+  cors {
+    origin          = ["*"]
+    method          = ["GET", "HEAD", "OPTIONS"]
+    response_header = ["*"]
+    max_age_seconds = 3600
   }
+
+  labels = var.labels
 }
 
-resource "aws_s3_bucket_acl" "s3_bucket" {
-  bucket = aws_s3_bucket.s3_bucket.id
-  acl = "public-read"
-  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+resource "google_storage_bucket_iam_member" "public_read" {
+  bucket = google_storage_bucket.website.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
 }
 
-resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
-  bucket = aws_s3_bucket.s3_bucket.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-  depends_on = [aws_s3_bucket_public_access_block.example]
-}
-
-resource "aws_iam_user" "s3_bucket" {
-  name = "s3-bucket"
-}
-
-resource "aws_s3_bucket_public_access_block" "example" {
-  bucket = aws_s3_bucket.s3_bucket.id
-
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
-
-resource "aws_s3_bucket_policy" "s3_bucket" {
-  bucket = aws_s3_bucket.s3_bucket.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "PublicReadGetObject"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = "s3:GetObject"
-        Resource = [
-          aws_s3_bucket.s3_bucket.arn,
-          "${aws_s3_bucket.s3_bucket.arn}/*",
-        ]
-      },
-    ]
-  })
-  depends_on = [aws_s3_bucket_public_access_block.example]
+resource "google_storage_bucket_iam_member" "admin" {
+  bucket = google_storage_bucket.website.name
+  role   = "roles/storage.objectAdmin"
+  member = "user:${var.admin_email}"
 }
 ```
 
-This configuration creates a public S3 bucket hosting a website with an index page and an error page.
+This configuration creates a public Cloud Storage bucket configured for website hosting with an index page and a 404 error page.
 
 You will notice that there is no provider block in this configuration. When Terraform processes a module block, it will inherit the provider from the enclosing configuration. Because of this, there's no need to include `provider` blocks in modules.
 
-Define the following variables in `variables.tf` inside the `modules/aws-s3-static-website-bucket` directory:
+Make sure you're using your Google Cloud project ID for all resources in this module.
 
-- name: `bucket_name`
-- description: `Name of S3 bucket. Must be unique`
-- type: `string`
+Define the following variables in `variables.tf` inside the `modules/gcp-storage-static-website-bucket` directory:
 
-- name: `tags`
-- description: `Tags to set on bucket.`
-- type: `map(string)`
-- default: `{}`
+```hcl
+variable "project_id" {
+  description = "The ID of the project where the bucket will be created"
+  type        = string
+}
 
+variable "bucket_name" {
+  description = "Name of storage bucket. Must be unique"
+  type        = string
+}
 
-When using a module, variables are set by passing arguments to the module in your configuration. You will set values for some of these variables when calling this module from your root module's `main.tf`.
+variable "location" {
+  description = "Location for the storage bucket"
+  type        = string
+  default     = "US"
+}
 
-Consider which resource arguments to expose to module end users as input variables when creating a module. For example, you might choose to make the index and error documents available to end users of this module as variables, but refrain from defining a variable to set the ACL , since hosting a website requires your bucket to have the ACL set to "public-read. "
+variable "admin_email" {
+  description = "Email address of the bucket admin"
+  type        = string
+}
 
-You should also consider which values to add as outputs since outputs are the only way users can get information about resources configured by the module.
+variable "labels" {
+  description = "Labels to set on the bucket"
+  type        = map(string)
+  default     = {}
+}
+```
 
-Inside the `modules/aws-s3-static-website-bucket` directory, add outputs to your module in the `outputs.tf` file :
+When using a module, variables are set by passing arguments to the module in your configuration. You will set values for these variables when calling this module from your root module's `main.tf`.
 
-## Output variable definitions
+Inside the `modules/gcp-storage-static-website-bucket` directory, add outputs to your module in the `outputs.tf` file:
 
-- name: `arn`
-- description: `ARN of the bucket`
-- value: `aws_s3_bucket.s3_bucket.arn`
+```hcl
+output "url" {
+  description = "The URL of the website"
+  value       = "https://storage.googleapis.com/${google_storage_bucket.website.name}/index.html"
+}
 
-- name: `name`
-- description: `Name (id) of the bucket`
-- value: `aws_s3_bucket.s3_bucket.id`
+output "name" {
+  description = "Name of the bucket"
+  value       = google_storage_bucket.website.name
+}
 
-- name: `domain`
-- description: `Domain name of the bucket`
-- value: `aws_s3_bucket_website_configuration.s3_bucket.website_domain`
+output "self_link" {
+  description = "Self link of the bucket"
+  value       = google_storage_bucket.website.self_link
+}
+```
 
 Like variables, outputs in modules perform the same function as they do in the root module but are accessed differently. A module's outputs can be accessed as read-only attributes on the module object, which is available within the configuration that calls the module. You can reference these outputs in expressions as `module.<MODULE NAME>.<OUTPUT NAME>`.
 
-Now that you have created your module, return to the `main.tf` in your root module and add a reference to the new module:
+Now that you have created your module, create a `main.tf` in your root module directory and add a reference to the new module:
 
 ```hcl
-module "website_s3_bucket" {
-  source = "./modules/aws-s3-static-website-bucket"
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+  }
+}
 
+provider "google" {
+  project = var.project_id
+  region  = var.region
+}
+
+module "static_website_bucket" {
+  source = "./modules/gcp-storage-static-website-bucket"
+
+  project_id  = var.project_id
   bucket_name = "<UNIQUE BUCKET NAME>"
+  location    = "US"
+  admin_email = "your.email@example.com"
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
+  labels = {
+    environment = "dev"
+    terraform   = "true"
   }
 }
 ```
 
-AWS S3 Buckets must be globally unique. Because of this, you will need to **replace `<UNIQUE BUCKET NAME>`** with a unique, valid name for an S3 bucket. Using your name and the date is usually a good way to guess a unique bucket name. For example:
+Google Cloud Storage buckets must be globally unique. Because of this, you will need to **replace `<UNIQUE BUCKET NAME>`** with a unique, valid name for a storage bucket. Using your name and the date is usually a good way to create a unique bucket name. For example:
 
 ```hcl
   bucket_name = "jrs-example-2023-01-15"
 ```
 
-In this example, the `bucket_name` and `tags` arguments will be passed to the module, and values will be provided for the matching variables found in `modules/aws-s3-static-website-bucket/variables.tf`.
-
-## Define outputs
-Earlier, you added several outputs to the `aws-s3-static-website-bucket` module, making those values available to your root module configuration.
-
-Add these values as outputs to your root module by adding the following to `outputs.tf` file in your root module directory (not the one in `modules/aws-s3-static-website-bucket`).
+Create a `variables.tf` file in your root module directory:
 
 ```hcl
-# Output definitions
-
-output "website_bucket_arn" {
-  description = "ARN of the bucket"
-  value       = module.website_s3_bucket.arn
+variable "project_id" {
+  description = "Google Cloud Project ID"
+  type        = string
 }
 
-output "website_bucket_name" {
-  description = "Name (id) of the bucket"
-  value       = module.website_s3_bucket.name
+variable "region" {
+  description = "Google Cloud region"
+  type        = string
+  default     = "us-central1"
+}
+```
+
+## Define outputs
+Earlier, you added several outputs to the `gcp-storage-static-website-bucket` module, making those values available to your root module configuration.
+
+Add these values as outputs to your root module by adding the following to `outputs.tf` file in your root module directory:
+
+```hcl
+output "website_url" {
+  description = "URL of the website"
+  value       = module.static_website_bucket.url
 }
 
-output "website_bucket_domain" {
-  description = "Domain name of the bucket"
-  value       = module.website_s3_bucket.domain
+output "bucket_name" {
+  description = "Name of the bucket"
+  value       = module.static_website_bucket.name
+}
+
+output "bucket_self_link" {
+  description = "Self link of the bucket"
+  value       = module.static_website_bucket.self_link
 }
 ```
 
@@ -247,18 +233,33 @@ output "website_bucket_domain" {
 When you add a new module to a configuration, Terraform must install it before it can be used. Both the `terraform get` and `terraform init` commands will install and update modules. The `terraform init` command will also initialize backends and install plugins.
 
 ```sh
-terraform get
+terraform init
 ```
 
-Now that your new module is installed and configured, run `terraform apply` to provision your bucket.
+Create a `terraform.tfvars` file with your project ID:
 
+```hcl
+project_id = "YOUR_PROJECT_ID"
+```
 
-## Bonus
-Use the `aws s3` command to copy an `index.html` file to your bucket, and load it in a browser. 
+## Apply the configuration
 
+Now you can apply the configuration:
+
+```sh
+terraform apply
+```
+
+After the configuration is applied, you'll see the outputs including the website URL, bucket name, and bucket self link.
 
 ## Cleanup
-Now clean everything up by running `terraform destroy -auto-approve`
 
-# Congrats! 
-You have now configured and used your own module to create a static website. 
+When you're done, clean up the resources:
+
+```sh
+terraform destroy
+```
+
+## Congratulations
+
+You have successfully created a Terraform module for hosting static websites using Google Cloud Storage! 
