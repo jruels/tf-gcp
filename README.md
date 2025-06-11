@@ -23,5 +23,5 @@ Lab 9: [Write your own module](labs/tf-write-module/index.md)
 Lab 10: [Refactor monolithic codebase](labs/tf-refactor/index.md)   
 
 ### Day 3
-Lab 11: [GitLab fundamentals](labs/labs/gitlab-cicd/gitlab-basics.md)   
+Lab 11: [GitLab fundamentals](labs/gitlab-cicd/gitlab-basics.md)   
 
