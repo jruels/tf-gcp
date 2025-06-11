@@ -1,87 +1,111 @@
-# GitLab Basics Lab
+# GitLab Basics Lab 
 
-This lab will walk you through the fundamental features of GitLab and help you create your first CI/CD pipeline.
+This lab uses Visual Studio Code to walk you through fundamental GitLab features and sets up your first CICD pipeline.
 
 ## Part 1: Getting Started with GitLab
 
 ### Set Up SSH Key in GitLab
-1. Generate an SSH key (if you don't have one):
-   ```bash
-   ssh-keygen -t ed25519 -C "your.email@example.com"
-   ```
 
-2. Copy your public key to clipboard:
-   ```bash
-   # For macOS
-   tr -d '\n' < ~/.ssh/id_ed25519.pub | pbcopy
-   
-   # For Linux (requires xclip)
-   xclip -sel clip < ~/.ssh/id_ed25519.pub
-   
-   # For Windows Git Bash
-   cat ~/.ssh/id_ed25519.pub | clip
-   ```
+1. **Open Visual Studio Code.**
 
-3. Add the key to GitLab:
-   - Sign in to GitLab
-   - Click your avatar in the top right
-   - Select "Edit profile"
-   - On the left sidebar, select "SSH Keys"
-   - Click "Add new key"
-   - Paste your public key in the "Key" box
-   - Add a title (e.g., "Work Laptop")
-   - Click "Add key"
+2. **If you're using Windows, open a Git Bash terminal:**
 
-### Create a New Project
-1. Log into GitLab
-2. Click the "+" button in the top navigation bar
-3. Select "New project/repository"
-4. Choose "Create blank project"
-5. Fill in the following:
-   - Project name: `my-first-pipeline`
-   - Project URL: Make sure your username is selected (NOT any group)
-   - Visibility Level: Public
-   - Initialize repository with a README: Yes
-6. Click "Create project"
+   - Click the **+▼** button in the terminal panel
+   - Select **Git Bash** from the list
 
-The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pipeline`
+3. **In the VS Code Explorer sidebar**, right-click the `unlocking terraform` folder and select **New Folder**. Name it `gl-ssh-key`.
+
+4. **Generate the SSH key and save it as** `**gitlab_key**` **inside the** `**gl-ssh-key**` **folder:**
+
+   - In the Git Bash terminal, run:
+
+     ```bash
+     ssh-keygen -t ed25519 -C "your.email@example.com" -f "<path-to-unlocking-terraform>/gl-ssh-key/gitlab_key"
+     ```
+
+     Replace `<path-to-unlocking-terraform>` with the path to your `unlocking terraform` folder
+
+5. **Create and configure the** `SSH config` **file:**
+
+   - In VS Code, go to **File → Open File...**
+
+   - Navigate to your `.ssh` folder:
+
+     - On Windows, type `%USERPROFILE%\.ssh` into the file dialog and press Enter
+     - On macOS/Linux, use `~/.ssh`
+
+   - If the `config` file exists, select it. If not, create a new file named `config`.
+
+   - Add the following content:
+
+   - **NOTE**: Update the `IdentifyFile` field with the correct path to your `gitlab_key`.
+
+     ```
+     Host gitlab.com
+       HostName gitlab.com
+       User git
+       IdentityFile ~/unlocking\ terraform/gl-ssh-key/gitlab_key
+       IdentitiesOnly yes
+     ```
+
+6. **Copy your public key:**
+
+   - In the VS Code Explorer, open `gitlab_key.pub` from the `gl-ssh-key` folder
+   - Highlight the contents and copy them (`Ctrl+C` / `Cmd+C`)
+
+7. **Create a GitLab account:**
+
+   - Go to [https://gitlab.com](https://gitlab.com/) and click **Register**
+   - Use your email and create a new GitLab account
+   - During sign-up, select the **trial** option (free trial is acceptable)
+   - GitLab may prompt you to verify your identity — choose **phone number** verification to ensure CI/CD pipelines can run
+   - Once signed up and verified, log in
+
+8. **Add the SSH key to GitLab:**
+
+   - In GitLab, go to your avatar > **Edit profile** > **SSH Keys**
+   - Paste the copied key into the **Key** field
+   - Add a title such as `Work Laptop`
+   - Click **Add key**
+
+9. **Create a new project in GitLab:**
+
+   - At the top of the page, click "**+**" > **New project/repository**
+   - Select **Create blank project**
+   - Fill in:
+     - Project name: `my-first-pipeline`
+     - Project URL: Make sure your username is selected (**NOT any group**)
+     - Visibility Level: Public
+     - Initialize repository with a README: Yes
+   - Click **Create project**
+
+10. **Verify pipelines are working:**
+
+    - After your project is created, go to **Build → Pipelines** from the left-hand menu
+    - Confirm that GitLab does **not prompt you again for identity verification**
+    - If it does, provide your phone number and verify with the code received.
+    - This ensures pipelines will run properly before you clone or push any code
 
 ## Part 2: Basic Repository Management
 
 ### Clone Your Repository
-1. Configure git (if you haven't already):
-   ```bash
-   git config --global user.name "Your Name"
-   git config --global user.email "your.email@example.com"
-   ```
 
-2. Set up SSH key (if you haven't already):
-   ```bash
-   # Generate SSH key
-   ssh-keygen -t ed25519 -C "your.email@example.com"
-   
-   # Start the SSH agent
-   eval "$(ssh-agent -s)"
-   
-   # Add your SSH key to the agent
-   ssh-add ~/.ssh/id_ed25519
-   
-   # Copy your public key
-   cat ~/.ssh/id_ed25519.pub
-   ```
-   Then add the copied key to GitLab: Settings → SSH Keys
-
-3. Click the "Clone" button
-4. Copy the SSH URL (not HTTPS)
-5. Open your terminal and run:
-   ```bash
-   git clone <your-repo-url>
-   cd my-first-pipeline
-   ```
+1. In GitLab:
+   - Click the **Clone** button
+   - Copy the **SSH URL**
+2. In VS Code:
+   - Open **Command Palette** (`Ctrl+Shift+P` or `Cmd+Shift+P`)
+   - Type `Git: Clone` and select it
+   - Paste the SSH URL
+   - When prompted, select the parent folder where you want to save the project
+   - VS Code will ask: "Would you like to open the cloned repository?" Click **Open**
 
 ### Create a Simple Application
-1. Create a new file called `index.html`:
-   Create a new file called `index.html` and add the following content using your preferred code editor:
+
+1. In the new VS Code windows, select Explorer (left panel):
+
+   - Right-click on the project root > **New File** > Name it `index.html`
+   - Paste the following content:
 
    ```html
    <!DOCTYPE html>
@@ -97,15 +121,17 @@ The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pip
    ```
 
 ### Create Your First Pipeline
-1. 
-   Create a new file called `.gitlab-ci.yml` and add the following content using your preferred code editor:
+
+1. Right-click on the project root > **New File** > Name it `.gitlab-ci.yml`
+
+2. Paste the following content:
 
    ```yaml
    stages:
      - test
      - build
      - deploy
-
+   
    test-job:
      stage: test
      image: alpine
@@ -113,7 +139,7 @@ The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pip
        - echo "Running tests..."
        - test -f index.html
        - grep "GitLab CI/CD" index.html
-
+   
    build-job:
      stage: build
      image: alpine
@@ -124,7 +150,7 @@ The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pip
      artifacts:
        paths:
          - public
-
+   
    pages:
      stage: deploy
      script:
@@ -137,54 +163,46 @@ The project URL should look like: `https://gitlab.com/YOUR-USERNAME/my-first-pip
    ```
 
 ### Commit and Push Changes
-```bash
-git add index.html .gitlab-ci.yml
-git commit -m "Add website and pipeline configuration"
 
-# Debug git push issues
-git remote -v  # Check remote URL
-git config --get remote.origin.url  # Verify remote URL
-ssh -T git@gitlab.com  # Test SSH connection to GitLab
-
-# If everything looks good, push
-git push -u origin main
-```
+1. In the Source Control view (left sidebar, or `Ctrl+Shift+G`):
+   - You’ll see your two new files listed
+   - Click the **+** (plus sign) next to each file to stage it
+   - Enter a commit message: `Add website and pipeline configuration`
+   - Click **Commit** to commit the changes. 
+   - Click **Sync** and select yes, when prompted to confirm.
 
 ## Part 3: Understanding CI/CD Features
 
-### Pipeline Visualization
-1. In Gitlab, go to Build → Pipelines
-2. You should see your pipeline running
-3. Click on the pipeline to see the stages:
-   - Test stage: Verifies the HTML file exists
-   - Build stage: Creates a public directory
-   - Deploy stage: Deploys to GitLab Pages
+### View the Pipeline
 
-### Job Logs
-1. Click on any job in the pipeline
-2. Observe the real-time log output
-3. Notice the job status indicators:
+1. In GitLab:
+   - Go to **Build → Pipelines**
+   - Click your running pipeline to view stages
+
+### View Job Logs
+
+1. Click any job to view logs in real-time
+2. Notice:
    - Blue: Running
    - Green: Passed
    - Red: Failed
 
-### Pipeline Settings
-1. Go to Settings → CI/CD
-2. Explore key settings:
-   - Runners
-   - Variables
-   - Artifacts
-   - Secure files
+### Review Pipeline Settings
+
+1. In GitLab:
+   - Go to **Settings → CI/CD**
+   - Browse through Runners, Variables, Artifacts, Secure Files
 
 ## Part 4: Working with Branches
 
 ### Create a Feature Branch
-1. Create a new branch:
-   ```bash
-   git checkout -b feature/add-styling
-   ```
 
-2. Modify `index.html`:
+1. In the bottom-left corner of VS Code, click the branch name (e.g., `main`) in the status bar to open the branch menu
+
+2. Select **Create new branch** and name it: `feature/add-styling`
+
+3. Open `index.html` and update it to include the **<style>** block:
+
    ```html
    <!DOCTYPE html>
    <html>
@@ -208,70 +226,74 @@ git push -u origin main
    </body>
    </html>
    ```
-3. Commit and push:
-   ```bash
-   git add index.html
-   git commit -m "Add CSS styling"
-   git push origin feature/add-styling
-   ```
-### Create a Merge Request
-1. Go to Merge Requests → New merge request
-2. Select:
-   - Source branch: `feature/add-styling`
-   - Target branch: `main`
-3. Click "Compare branches and continue"
-4. Fill in:
-   - Title: "Add CSS styling to website"
-   - Description: "Added basic CSS to improve the page appearance"
-5. Click "Create merge request"
 
-### Review Pipeline and Merge
-1. Observe that the pipeline automatically runs for your merge request
-2. Wait for all jobs to pass
-3. Click "Merge" when ready
+4. Save the file.
+
+5. Commit and push:
+
+   - Go to Source Control
+   - Add commit message: `Add CSS styling`
+   - Click ✓ to commit
+   - In the pop-up window, select **Yes** to stage all changed files.
+   - Click **Publish Branch**
+
+### Create a Merge Request
+
+1. In GitLab:
+   - Go to **Merge Requests → New merge request**
+   - Select:
+     - Source: `feature/add-styling`
+     - Target: `main`
+   - Click **Compare branches and continue**
+   - Fill in title/description
+   - Click **Create merge request**
+2. Wait for pipeline to pass and click **Merge**
 
 ## Part 5: GitLab Pages
 
 ### View Your Deployed Site
-1. Go to Deploy → Pages
-2. You should see your site's URL (usually `https://<username>.gitlab.io/<project-name>`)
-3. Click the URL to view your deployed website
+
+1. In GitLab:
+   - Navigate to **Deploy → Pages**
+   - Click the site URL to view it live
 
 ## Part 6: Additional Features
 
-### Issues
-1. Go to Issues → New issue
-2. Create an issue:
-   - Title: "Add footer to website"
-   - Description: "We should add a footer with contact information"
-   - Labels: Select or create appropriate labels
-3. Click "Create issue"
+### Create an Issue
 
-### Project Wiki
-1. Go to Wiki
-2. Click "Create your first page"
-3. Add some documentation about your project
-4. Use markdown formatting to structure your content
+1. In GitLab:
+   - Go to **Issues → New issue**
+   - Add:
+     - Title: `Add footer to website`
+     - Description: `We should add a footer with contact information.`
+   - Click **Create issue**
 
-### Analytics
-1. Explore Analyze → Repository Analytics
-2. View commit history and contribution graphs
-3. Check CI/CD analytics for pipeline performance
+### Create Wiki Documentation
+
+1. In GitLab:
+   - Go to **Wiki**
+   - Click **Create your first page**
+   - Write content in Markdown
+   - Save page
+
+### Explore Analytics
+
+1. In GitLab:
+   - Go to **Analyze → Repository Analytics**
+   - View commit history, pipeline duration, and contributions
 
 ## Conclusion
 
-Congratulations! You've learned the basics of:
-- Creating a GitLab project
-- Setting up a basic CI/CD pipeline
-- Working with branches and merge requests
-- Deploying to GitLab Pages
-- Using issues and wiki features
+You’ve successfully:
 
-Next Steps:
-- Add more complex pipeline stages
-- Explore environment deployments
-- Set up code quality checks
-- Configure automated testing
-- Implement security scanning 
+- Created a GitLab project
+- Used VS Code to manage your repo and files
+- Set up a pipeline and deployed to GitLab Pages
+- Explored collaboration and CI/CD features
 
+**Next Steps:**
 
+- Expand your `.gitlab-ci.yml`
+- Use environments
+- Add linting and security scans
+- Experiment with GitLab Auto DevOps
