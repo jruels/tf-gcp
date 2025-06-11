@@ -34,7 +34,7 @@ You also want to make sure and add the following to your ignore list. If you are
 
 ### Create Terraform configuration
 
-1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
+1. In **Visual Studio Code**, open the working directory.
 2. Right-click in the **Explorer** pane and select **New Folder**.
 3. Name the folder `tf-lab6`.
 4. Create a sub-folder called `modules` inside `tf-lab6`.
