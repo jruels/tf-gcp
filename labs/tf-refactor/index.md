@@ -8,7 +8,7 @@ You will start with two copies of a web application hosted in Cloud Storage buck
 ## Start with a monolith configuration
 ### Create the Lab Directory
 
-1. In **Visual Studio Code**, open the working directory created in the previous lab (`YYYYMMDD/terraform`).
+1. In **Visual Studio Code**, open the working directory.
 2. Right-click in the **Explorer** pane and select **New Folder**.
 3. Name the folder `tf-lab7`.
 4. Create the following files in your `tf-lab7` directory:
