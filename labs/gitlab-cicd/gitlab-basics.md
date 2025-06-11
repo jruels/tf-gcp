@@ -15,7 +15,7 @@ This lab uses Visual Studio Code to walk you through fundamental GitLab features
 
 3. **In the VS Code Explorer sidebar**, right-click the `unlocking terraform` folder and select **New Folder**. Name it `gl-ssh-key`.
 
-4. **Generate the SSH key and save it as** `**gitlab_key**` **inside the** `**gl-ssh-key**` **folder:**
+4. **Generate the SSH key and save it as `gitlab_key` inside the `gl-ssh-key` folder:
 
    - In the Git Bash terminal, run:
 
